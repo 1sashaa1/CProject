@@ -27,6 +27,8 @@ public class ClientSocket {
 
     public static ClientSocket getInstance(){return SINGLE_INSTANCE;}
 
+    public BufferedReader getInStream(){return in;}
+
 
     public int getFlightId() {
         return FlightId;
@@ -35,6 +37,8 @@ public class ClientSocket {
     public User getUser() {
         return user;
     }
+
+
 
     public static Socket getSocket() {
         return socket;

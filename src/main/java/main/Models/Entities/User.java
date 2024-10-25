@@ -1,75 +1,64 @@
 package main.Models.Entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 
 public class User implements Serializable {
-    private int ID;
-    private String Login;
-    private String Password;
-    private String Role;
+    private int id;
+    private String login;
+    private String password;
+    private String role;
 
-    private PersonData personData;
-
-    //private Set<UserMark> UserMarks = new HashSet<>();
+    private Client client;
 
     public User(){
 
     }
-    public User(int ID, String login, String password, String role, PersonData personData) { //Set<UserMark> userMarks
-        this.ID = ID;
-        Login = login;
-        Password = password;
-        Role = role;
-        this.personData = personData;
-        //UserMarks = userMarks;
+    public User(int ID, String login, String password, String role, Client client) {
+        this.id = ID;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.client = client;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
     public String getLogin() {
-        return Login;
+        return login;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public String getRole() {
-        return Role;
+        return role;
     }
 
-    public PersonData getPersonData() {
-        return personData;
+    public Client getClient() {
+        return client;
     }
 
-//    public Set<UserMark> getUserMarks() {
-//        return UserMarks;
-//    }
-
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setLogin(String login) {
-        Login = login;
+        this.login = login;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public void setRole(String role) {
-        Role = role;
+        this.role = role;
     }
 
-    public void setPersonData(PersonData personData) {
-        this.personData = personData;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-//    public void setUserMarks(Set<UserMark> userMarks) {
-//        UserMarks = userMarks;
-//    }
 }

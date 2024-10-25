@@ -19,7 +19,7 @@
                </font>
             </Label>
             <PasswordField fx:id="passwordFieldPassword" layoutX="275.0" layoutY="129.0" promptText="Пароль" />
-            <Label layoutX="264.0" layoutY="215.0" text="Oops! Ошибка входа в систему" textFill="#fa2727" visible="false" />
+            <Label fx:id="labelMessage" layoutX="264.0" layoutY="215.0" text="Oops! Ошибка входа в систему" textFill="#fa2727" visible="false" />
          </children>
       </AnchorPane>
       <Label layoutX="202.0" layoutY="20.0" text="Система контроля вкладов" textFill="#faf9f9">

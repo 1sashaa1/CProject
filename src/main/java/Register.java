@@ -1,23 +1,25 @@
 import com.google.gson.Gson;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import main.Enums.RequestType;
 import main.Enums.ResponseStatus;
-import main.Models.Entities.PersonData;
+import main.Enums.Roles;
+import main.Models.Entities.Client;
 import main.Models.Entities.User;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDate;
 
 public class Register {
     @FXML
@@ -34,56 +36,133 @@ public class Register {
     private PasswordField passwordFieldRepeatPassword;
     @FXML
     private Button buttonLogin;
+    @FXML
+    private TextField textFieldSurname;
+    @FXML
+    private TextField textFieldName;
+    @FXML
+    private TextField textFieldPatron;
+    @FXML
+    private TextField textFieldIDNumber;
+    @FXML
+    private TextField textFieldDocN;
+    @FXML
+    private DatePicker textFieldDOB;
+    @FXML
+    private ComboBox<String> textFieldCiti;
+    @FXML
+    private ComboBox<String> textFieldTypeDoc;
+
+    public void initialize() {
+        // Заполнение ComboBox для гражданства
+        ObservableList<String> citizenshipOptions = FXCollections.observableArrayList(
+                "Беларусь",
+                "Россия",
+                "Польша",
+                "Украина",
+                "Литва",
+                "Латвия"
+        );
+        textFieldCiti.setItems(citizenshipOptions);
+
+        ObservableList<String> docTypeOptions = FXCollections.observableArrayList(
+                "Passport",
+                "ID Card",
+                "Driver's License"
+        );
+        textFieldTypeDoc.setItems(docTypeOptions);
+    }
 
     public void Register_Pressed(ActionEvent actionEvent) throws IOException {
         labelMessage.setVisible(false);
-        String password = passwordFieldPassword.getText();
-        String repeatPassword = passwordFieldRepeatPassword.getText();
 
-
-        User user = new User();
-        user.setLogin(textFieldLogin.getText());
-        //user.setRole(Roles.User);
-        user.setPassword(password);
-
-        PersonData personData = new PersonData();
-        personData.setEmail(textFieldEmail.getText());
-
-        user.setPersonData(personData);
-        if (!password.equals(repeatPassword)) {
-            labelMessage.setText("Пароли не совпадают");
-            labelMessage.setVisible(true);
-            return;
-        }
-        if (textFieldLogin.equals("") || textFieldEmail.equals("") || passwordFieldPassword.equals("") || passwordFieldRepeatPassword.equals("")){
+        // Проверка на пустые поля
+        if (textFieldLogin.getText().isEmpty() || textFieldEmail.getText().isEmpty() ||
+                passwordFieldPassword.getText().isEmpty() || passwordFieldRepeatPassword.getText().isEmpty()) {
             labelMessage.setText("Не все поля заполнены");
             labelMessage.setVisible(true);
             return;
         }
 
-        Request request = new Request();
+        String password = passwordFieldPassword.getText();
+        String repeatPassword = passwordFieldRepeatPassword.getText();
 
+        if (!password.equals(repeatPassword)) {
+            labelMessage.setText("Пароли не совпадают");
+            labelMessage.setVisible(true);
+            return;
+        }
+
+        // Создание пользователя
+        User user = new User();
+        user.setLogin(textFieldLogin.getText());
+        Roles userRole = Roles.CLIENT;
+        user.setRole(userRole.name());
+        user.setPassword(password);
+
+        // Создание клиента
+        Client client = new Client();
+        client.setEmail(textFieldEmail.getText());
+        client.setName(textFieldName.getText());
+        client.setSurname(textFieldSurname.getText());
+        client.setPatronymic(textFieldPatron.getText());
+
+        // Преобразование даты
+        LocalDate dob = textFieldDOB.getValue();
+        if (dob != null) {
+            client.setDob(dob.toString());  // Преобразуем дату в строку
+        }
+
+        client.setCitizenship(textFieldCiti.getValue());
+        client.setDocumentType(textFieldTypeDoc.getValue());
+        client.setIdNumber(textFieldIDNumber.getText());
+        client.setDocumentNumber(textFieldDocN.getText());
+
+        user.setClient(client);
+
+        // Создание и отправка запроса
+        Request request = new Request();
         request.setRequestMessage(new Gson().toJson(user));
         request.setRequestType(RequestType.REGISTER);
 
-        ClientSocket.getInstance().getOut().println(new Gson().toJson(request));
+        PrintWriter out = ClientSocket.getInstance().getOut();
+        if (out != null) {
+            out.println(new Gson().toJson(request));
+            out.flush();
+        } else {
+            System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+        }
         ClientSocket.getInstance().getOut().flush();
 
-        String answer = ClientSocket.getInstance().getIn().readLine();//////////////
+        // Получение ответа от сервера
+        String answer = ClientSocket.getInstance().getInStream().readLine();
+        System.out.println(answer);
         Response response = new Gson().fromJson(answer, Response.class);
-        if (response.getResponseStatus() == ResponseStatus.OK){
+        System.out.println(response);
+
+        if (response != null) {
+        if (response.getResponseStatus() == ResponseStatus.OK) {
             labelMessage.setVisible(false);
-            ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseData(), User.class));
-            //Stage stage = (Stage) buttonBack.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource(""));
+            ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseUser(), User.class));
+
+            // Переход на другой экран (укажите корректный путь)
+            Stage stage = (Stage) buttonCreate.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("First_page.fxml"));
             Scene newScene = new Scene(root);
-            //stage.setScene(newScene);
+            stage.setScene(newScene);
+            stage.show();
         }
-        else{
+        else if (response.getResponseStatus() == null) {
+            labelMessage.setText("Ошибка внесения в БД.");
+        }
+        else  {
             labelMessage.setText("Пользователь с таким логином уже существует.");
             labelMessage.setVisible(true);
         }
+        } else {
 
+            System.err.println("Response is null. Registration failed.");
+        }
     }
 
     public void Login_Pressed(ActionEvent actionEvent) throws IOException {
@@ -91,6 +170,6 @@ public class Register {
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
-
     }
 }
+
