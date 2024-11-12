@@ -1,11 +1,11 @@
 package main.Models.TCP;
 
-import com.google.gson.Gson;
 import main.Enums.ResponseStatus;
 
 public class Response { //???
     private ResponseStatus responseStatus;
     private String responseData;
+    private String returnUser;
 
 
     public Response(ResponseStatus responseStatus) {
@@ -23,8 +23,7 @@ public class Response { //???
     }
 
     public String getResponseUser() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+        return returnUser;
     }
 
     public String getResponseData() {

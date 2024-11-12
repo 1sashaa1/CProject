@@ -1,5 +1,6 @@
 package main.Utility;
 
+import main.Models.Entities.Deposit;
 import main.Models.Entities.User;
 
 import java.io.BufferedReader;
@@ -10,6 +11,7 @@ import java.net.Socket;
 public class ClientSocket {
     private static final ClientSocket SINGLE_INSTANCE = new ClientSocket();
     private User user;
+    private Deposit deposit;
     private static Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -38,7 +40,9 @@ public class ClientSocket {
         return user;
     }
 
-
+    public Deposit getDeposit() {
+        return deposit;
+    }
 
     public static Socket getSocket() {
         return socket;
@@ -58,6 +62,10 @@ public class ClientSocket {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setDeposit(Deposit deposit) {
+        this.deposit = deposit;
     }
 
     public static void setSocket(Socket socket) {

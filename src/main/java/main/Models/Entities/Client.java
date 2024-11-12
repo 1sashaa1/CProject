@@ -1,12 +1,14 @@
 package main.Models.Entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Date;
 import java.util.Set;
 
 public class Client implements Serializable {
-
+    @SerializedName("id")
     private int clientId;
 
     private String email;
@@ -133,4 +135,13 @@ public class Client implements Serializable {
         Users = users;
     }
 
+    @Override
+    public String toString() {
+        return "Клиент" +
+                "id=" + clientId +
+                ", name='" + name + '\'' +
+                ", name='" + surname + '\'' +
+                ", name='" + patronymic + '\'' +
+                '}';
+    }
 }

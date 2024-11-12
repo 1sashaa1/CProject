@@ -6,34 +6,49 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Register">
     <children>
-        <!-- ScrollPane добавлен -->
+
         <ScrollPane layoutY="66.0" prefHeight="550.0" prefWidth="700.0">
             <AnchorPane prefHeight="800.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
                 <children>
-                    <TextField fx:id="textFieldLogin" layoutX="275.0" layoutY="394.0" promptText="Логин" />
-                    <TextField fx:id="textFieldEmail" layoutX="274.0" layoutY="360.0" promptText="E-mail" />
-                    <Button fx:id="buttonCreate" layoutX="259.0" layoutY="521.0" mnemonicParsing="false" onAction="#Register_Pressed" prefHeight="26.0" prefWidth="182.0" style="-fx-background-color: #006400;" text="Создать учётную запись" textFill="#fcfafa" />
-                    <Label layoutX="282.0" layoutY="33.0" text="Регистрация" textFill="#101010">
+                    <TextField fx:id="textFieldLogin" layoutX="275.0" layoutY="394.0" />
+                    <TextField fx:id="textFieldEmail" layoutX="274.0" layoutY="360.0" />
+                    <Button fx:id="buttonCreate" layoutX="241.0" layoutY="523.0" mnemonicParsing="false" onAction="#Register_Pressed" prefHeight="35.0" prefWidth="214.0" style="-fx-background-color: #006400;" text="Создать учётную запись" textFill="#fcfafa">
+                  <font>
+                     <Font size="14.0" />
+                  </font></Button>
+                    <Label layoutX="295.0" layoutY="22.0" prefHeight="35.0" prefWidth="208.0" text="Регистрация" textAlignment="CENTER" textFill="#0d0d0d">
                         <font>
                             <Font size="24.0" />
                         </font>
                     </Label>
-                    <PasswordField fx:id="passwordFieldPassword" layoutX="275.0" layoutY="428.0" promptText="Пароль" />
-                    <PasswordField fx:id="passwordFieldRepeatPassword" layoutX="275.0" layoutY="463.0" promptText="Повторите пароль" />
-                    <Label fx:id="labelMessage" layoutX="274.0" layoutY="497.0" prefHeight="19.0" prefWidth="152.0" text="Oops! Ошибка регистрации." textFill="#fa2727" visible="false" />
-                    <TextField fx:id="textFieldSurname" layoutX="274.0" layoutY="76.0" promptText="Фамилия" />
-                    <TextField fx:id="textFieldName" layoutX="275.0" layoutY="110.0" promptText="Имя" />
-                    <TextField fx:id="textFieldPatron" layoutX="274.0" layoutY="147.0" promptText="Отчество" />
-                    <DatePicker fx:id="textFieldDOB" layoutX="275.0" layoutY="181.0" prefHeight="26.0" prefWidth="148.0" promptText="Дата рождения" />
-                    <TextField fx:id="textFieldIDNumber" layoutX="275.0" layoutY="291.0" promptText="Идентифик. номер" />
-                    <TextField fx:id="textFieldDocN" layoutX="274.0" layoutY="325.0" promptText="Номер документа" />
-                    <ComboBox fx:id="textFieldCiti" layoutX="275.0" layoutY="220.0" prefWidth="150.0" promptText="Гражданство" />
-                    <ComboBox fx:id="textFieldTypeDoc" layoutX="274.0" layoutY="255.0" prefWidth="150.0" promptText="Тип документа" />
+                    <PasswordField fx:id="passwordFieldPassword" layoutX="275.0" layoutY="428.0" />
+                    <PasswordField fx:id="passwordFieldRepeatPassword" layoutX="275.0" layoutY="463.0" />
+                    <Label fx:id="labelMessage" layoutX="230.0" layoutY="497.0" prefHeight="19.0" prefWidth="234.0" text="Oops! Ошибка регистрации." textAlignment="CENTER" textFill="#fa2727" visible="false" />
+                    <TextField fx:id="textFieldSurname" layoutX="274.0" layoutY="76.0" />
+                    <TextField fx:id="textFieldName" layoutX="275.0" layoutY="110.0" />
+                    <TextField fx:id="textFieldPatron" layoutX="274.0" layoutY="147.0" />
+                    <DatePicker fx:id="textFieldDOB" layoutX="275.0" layoutY="181.0" prefHeight="26.0" prefWidth="148.0" />
+                    <TextField fx:id="textFieldIDNumber" layoutX="275.0" layoutY="291.0" />
+                    <TextField fx:id="textFieldDocN" layoutX="274.0" layoutY="325.0" />
+                    <ComboBox fx:id="textFieldCiti" layoutX="275.0" layoutY="220.0" prefWidth="150.0" />
+                    <ComboBox fx:id="textFieldTypeDoc" layoutX="274.0" layoutY="255.0" prefWidth="150.0" />
+               <Label layoutX="161.0" layoutY="80.0" text="Фамилия:" />
+               <Label layoutX="161.0" layoutY="114.0" text="Имя:" />
+               <Label layoutX="161.0" layoutY="151.0" text="Отчество:" />
+               <Label layoutX="161.0" layoutY="259.0" text="Тип документа:" />
+               <Label layoutX="161.0" layoutY="467.0" text="Повторите пароль:" />
+               <Label layoutX="161.0" layoutY="295.0" text="Идентифик. номер:" />
+               <Label layoutX="161.0" layoutY="224.0" text="Гражданство:" />
+               <Label layoutX="161.0" layoutY="329.0" text="Номер документа:" />
+               <Label layoutX="161.0" layoutY="185.0" text="Дата рождения:" />
+               <Label layoutX="161.0" layoutY="432.0" text="Пароль:" />
+               <Label layoutX="161.0" layoutY="398.0" text="Логин:" />
+               <Label layoutX="161.0" layoutY="364.0" text="E-mail:" />
                 </children>
             </AnchorPane>
         </ScrollPane>
 
-        <Label layoutX="202.0" layoutY="20.0" text="Система контроля вкладов" textFill="#faf9f9">
+        <Label layoutX="202.0" layoutY="14.0" text="Система контроля вкладов" textFill="#faf9f9">
             <font>
                 <Font size="24.0" />
             </font>

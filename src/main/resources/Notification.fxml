@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notification">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+        <ScrollPane layoutY="66.0" prefHeight="700.0" prefWidth="800.0">
+            <AnchorPane layoutY="60.0" prefHeight="540.0" prefWidth="800.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
+                <children>
+                    <Label layoutX="290.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Система уведомлений" textFill="#101010">
+                  <font>
+                     <Font size="6.0" />
+                  </font></Label>
+
+                    <TextArea fx:id="messageText" layoutX="50.0" layoutY="60.0" prefHeight="100.0" prefWidth="700.0" promptText="Введите сообщение для отправки клиентам..." />
+
+                    <RadioButton fx:id="radioSingleClient" layoutX="50.0" layoutY="180.0" mnemonicParsing="false" text="Отправить одному клиенту" />
+                    <RadioButton fx:id="radioAllClients" layoutX="250.0" layoutY="180.0" mnemonicParsing="false" text="Отправить всем клиентам" />
+
+                    <ComboBox fx:id="clientList" layoutX="50.0" layoutY="220.0" prefWidth="700.0" promptText="Выберите клиента" />
+
+                    <Button fx:id="sendMessageButton" layoutX="600.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" />
+
+                </children>
+            </AnchorPane>
+        </ScrollPane>
+        <Label layoutX="252.0" layoutY="13.0" text="Система контроля вкладов" textFill="#faf9f9">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonExit" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+    </children>
+</AnchorPane>

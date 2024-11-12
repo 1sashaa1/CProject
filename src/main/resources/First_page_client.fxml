@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FirstPageClient">
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
+   <children>
+      <AnchorPane layoutY="60.0" prefHeight="426.0" prefWidth="720.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
+         <children>
+            <Label layoutX="220.0" layoutY="14.0" styleClass="title-label" text="Интерфейс клиента банка" />
+
+            <Pane layoutX="44.0" layoutY="60.0" prefHeight="120.0" prefWidth="262.0" styleClass="frame">
+               <Label layoutX="10.0" layoutY="14.0" styleClass="frame-title" text="Вклады" />
+               <Label layoutX="10.0" layoutY="40.0" styleClass="frame-description" text="Мои вклады." />
+               <Button fx:id="depositButton" layoutX="56.0" layoutY="67.0" onAction="#openList" prefHeight="39.0" prefWidth="156.0" styleClass="icon-button" text="Мои вклады">
+                  <graphic>
+                     <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                        <image>
+                           <Image url="@edit.png" />
+                        </image>
+                     </ImageView>
+
+                  </graphic>
+               </Button>
+            </Pane>
+
+            <Pane layoutX="402.0" layoutY="59.0" prefHeight="120.0" prefWidth="262.0" styleClass="frame">
+               <Label layoutX="10.0" layoutY="10.0" styleClass="frame-title" text="Вопрос" />
+               <Label layoutX="10.0" layoutY="40.0" styleClass="frame-description" text="Задать вопрос сотруднику банка." />
+               <Button fx:id="questionsButton" layoutX="53.0" layoutY="67.0" onAction="#openQuestions" prefHeight="39.0" prefWidth="156.0" styleClass="icon-button" text="Вопрос">
+                  <graphic>
+                     <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                        <image>
+                           <Image url="@message.png" />
+                        </image>
+                     </ImageView></graphic>
+               </Button>
+            </Pane>
+
+            <Pane layoutX="405.0" layoutY="229.0" prefHeight="120.0" prefWidth="255.0" styleClass="frame">
+               <Label layoutX="10.0" layoutY="10.0" styleClass="frame-title" text="Доступные вклады" />
+               <Label layoutX="10.0" layoutY="40.0" styleClass="frame-description" text="Список банковских вкладов." />
+               <Button fx:id="confirmButton" layoutX="50.0" layoutY="67.0" onAction="#openBank" prefHeight="39.0" prefWidth="156.0" styleClass="icon-button" text="Вклады">
+                  <graphic>
+                     <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                        <image>
+                           <Image url="@check.png" />
+                        </image>
+                     </ImageView></graphic>
+               </Button>
+            </Pane>
+         </children>
+
+      </AnchorPane>
+
+      <Label layoutX="212.0" layoutY="14.0" text="Система контроля вкладов" textFill="#faf9f9">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label> <Button fx:id="buttonExit" layoutX="575.0" layoutY="23.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+   </children>
+</AnchorPane>

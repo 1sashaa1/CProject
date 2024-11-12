@@ -1,0 +1,47 @@
+/* Фон интерфейса */
+.root {
+    -fx-background-color: white;
+}
+
+/* Заголовок интерфейса */
+.title-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #090909;
+    -fx-font-weight: bold;
+}
+
+/* Рамки */
+.frame {
+    -fx-background-color: #5d735d;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+/* Заголовок рамки */
+.frame-title {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Описание в рамке */
+.frame-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+}
+
+/* Кнопка с иконкой */
+.icon-button {
+    -fx-background-color: white;
+    -fx-text-fill: #090909;
+    -fx-font-weight: bold;
+    -fx-padding: 5 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #006400;
+    -fx-border-width: 1;
+}
+.icon-button:hover {
+    -fx-background-color: #f0f0f0;
+}

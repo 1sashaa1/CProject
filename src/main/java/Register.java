@@ -54,7 +54,9 @@ public class Register {
     private ComboBox<String> textFieldTypeDoc;
 
     public void initialize() {
+
         // Заполнение ComboBox для гражданства
+
         ObservableList<String> citizenshipOptions = FXCollections.observableArrayList(
                 "Беларусь",
                 "Россия",
@@ -63,6 +65,8 @@ public class Register {
                 "Литва",
                 "Латвия"
         );
+
+
         textFieldCiti.setItems(citizenshipOptions);
 
         ObservableList<String> docTypeOptions = FXCollections.observableArrayList(
@@ -143,11 +147,23 @@ public class Register {
         if (response != null) {
         if (response.getResponseStatus() == ResponseStatus.OK) {
             labelMessage.setVisible(false);
-            ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseUser(), User.class));
+            ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseUser(), User.class));ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseUser(), User.class));
+
+
+            //            // Получение пользователя из ClientSocket
+//            User currentUser = ClientSocket.getInstance().getUser();
+//
+//// Проверка, был ли установлен пользователь
+//            if (currentUser != null) {
+//                System.out.println("Установленный пользователь: " + currentUser.toString());
+//            } else {
+//                System.out.println("Пользователь не был установлен в ClientSocket.");
+//            }
+
 
             // Переход на другой экран (укажите корректный путь)
             Stage stage = (Stage) buttonCreate.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("First_page.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("First_page_client.fxml"));
             Scene newScene = new Scene(root);
             stage.setScene(newScene);
             stage.show();
