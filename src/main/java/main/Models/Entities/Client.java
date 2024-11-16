@@ -139,9 +139,6 @@ public class Client implements Serializable {
     public String toString() {
         return "Клиент" +
                 "id=" + clientId +
-                ", name='" + name + '\'' +
-                ", name='" + surname + '\'' +
-                ", name='" + patronymic + '\'' +
-                '}';
+                ", name='" + name + '\'';
     }
 }

@@ -17,6 +17,7 @@ import main.Models.Entities.User;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
+import main.idea.DTO.Session;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -91,6 +92,7 @@ public class Login {
 
                 if (currentUser != null) {
                     System.out.println("Установленный пользователь: " + currentUser.toString());
+                    Session.setClientId(currentUser.getId());
                 } else {
                     System.out.println("Пользователь не был установлен в ClientSocket.");
                 }
@@ -128,7 +130,6 @@ public class Login {
             labelMessage.setText("Пользователь с таким логином не существует.");
             labelMessage.setVisible(true);
         }
-
     }
 
     private void loadPage(String pagePath) throws IOException {

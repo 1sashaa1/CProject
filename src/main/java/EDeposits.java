@@ -302,4 +302,10 @@ public class EDeposits {
             alert.showAndWait();
         }
     }
+    public void openMainPage(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("First_page_employee.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
+    }
 }

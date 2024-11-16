@@ -12,6 +12,7 @@ import main.Enums.ResponseStatus;
 import main.Models.Entities.Client;
 import main.Models.Entities.Deposit;
 import main.Models.Entities.Notifications;
+import main.Models.Entities.User;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
@@ -21,7 +22,9 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class Notification {
     @FXML
@@ -37,7 +40,7 @@ public class Notification {
     @FXML
     private Button buttonExit;
 
-    private List<Client> clients = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>(); // Используем List для хранения клиентов
 
     @FXML
     public void initialize() {
@@ -45,7 +48,7 @@ public class Notification {
         radioSingleClient.setToggleGroup(clientGroup);
         radioAllClients.setToggleGroup(clientGroup);
 
-        loadClients();
+        loadClients();  // Инициализация загрузки клиентов
     }
 
     private void loadClients() {
@@ -69,9 +72,20 @@ public class Notification {
                     if (response.getResponseStatus() == ResponseStatus.OK) {
                         String jsonResponse = response.getResponseUser();
                         System.out.println("JSON ответ: " + jsonResponse);
-                        clients = List.of(new Gson().fromJson(jsonResponse, Client[].class));
-                        System.out.println("Клиенты " + clients);
-                        Platform.runLater(() -> clientList.getItems().setAll(clients));
+
+                        // Преобразуем JSON в список клиентов
+                        clients = new ArrayList<>(Arrays.asList(new Gson().fromJson(jsonResponse, Client[].class)));
+                        System.out.println("Клиенты: " + clients);
+
+                        // Обновление интерфейса в главном потоке
+                        Platform.runLater(() -> {
+                            if (clientList != null) {
+                                clientList.getItems().clear(); // Очищаем старые элементы
+                                clientList.getItems().addAll(clients); // Добавляем новые элементы
+                            } else {
+                                System.err.println("Ошибка: clientList не инициализирован.");
+                            }
+                        });
                     } else {
                         System.out.println("Ошибка: Не удалось загрузить данные из базы данных");
                     }
@@ -103,15 +117,10 @@ public class Notification {
 
     public void broadcastNotification(String message) {
         for (Client client : clients) {
+            // Отправляем сообщение каждому клиенту
+            System.out.println("Отправка уведомления для клиента: " + client);
             sendNotificationToClient(client.getClientId(), message);
         }
-    }
-
-    public void Exit_Pressed(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) buttonExit.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-        Scene newScene = new Scene(root);
-        stage.setScene(newScene);
     }
 
     public void sendMessage(ActionEvent actionEvent) {
@@ -122,12 +131,29 @@ public class Notification {
         }
 
         if (radioAllClients.isSelected()) {
-            broadcastNotification(message);
+            broadcastNotification(message); // Отправляем сообщение всем клиентам
         } else if (radioSingleClient.isSelected() && clientList.getValue() != null) {
             Client selectedClient = clientList.getValue();
-            sendNotificationToClient(selectedClient.getClientId(), message);
+            System.out.println("Выбранный клиент: " + selectedClient);
+
+            if (selectedClient != null) {
+                sendNotificationToClient(selectedClient.getClientId(), message);
+            }
         } else {
             System.out.println("Пожалуйста, выберите получателя или укажите, что сообщение должно быть отправлено всем.");
         }
+    }
+
+    public void Exit_Pressed(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
+    }
+    public void openMainPage(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("First_page_employee.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
     }
 }

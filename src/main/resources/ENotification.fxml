@@ -2,6 +2,7 @@
 
 <?import java.net.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -10,7 +11,7 @@
         <URL value="@style.css" />
     </stylesheets>
     <children>
-        <ScrollPane layoutY="66.0" prefHeight="700.0" prefWidth="800.0">
+
             <AnchorPane layoutY="60.0" prefHeight="540.0" prefWidth="800.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
                 <children>
                     <Label layoutX="290.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Система уведомлений" textFill="#101010">
@@ -18,18 +19,26 @@
                      <Font size="6.0" />
                   </font></Label>
 
-                    <TextArea fx:id="messageText" layoutX="50.0" layoutY="60.0" prefHeight="100.0" prefWidth="700.0" promptText="Введите сообщение для отправки клиентам..." />
+                    <TextArea fx:id="messageText" layoutX="50.0" layoutY="72.0" prefHeight="100.0" prefWidth="700.0" promptText="Введите сообщение для отправки клиентам..." />
+                    <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                                <image>
+                                    <Image url="@menu.png" />
+                                </image>
+                            </ImageView>
 
+                        </graphic>
+                    </Button>
                     <RadioButton fx:id="radioSingleClient" layoutX="50.0" layoutY="180.0" mnemonicParsing="false" text="Отправить одному клиенту" />
                     <RadioButton fx:id="radioAllClients" layoutX="250.0" layoutY="180.0" mnemonicParsing="false" text="Отправить всем клиентам" />
 
                     <ComboBox fx:id="clientList" layoutX="50.0" layoutY="220.0" prefWidth="700.0" promptText="Выберите клиента" />
 
-                    <Button fx:id="sendMessageButton" layoutX="600.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" />
+                    <Button fx:id="sendMessageButton" layoutX="600.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" textFill="#0b0b0b" />
 
                 </children>
             </AnchorPane>
-        </ScrollPane>
         <Label layoutX="252.0" layoutY="13.0" text="Система контроля вкладов" textFill="#faf9f9">
             <font>
                 <Font size="24.0" />

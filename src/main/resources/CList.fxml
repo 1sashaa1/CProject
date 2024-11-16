@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CList">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+        <ScrollPane layoutY="66.0" prefHeight="700.0" prefWidth="800.0">
+            <AnchorPane layoutY="60.0" prefHeight="540.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" styleClass="content-pane">
+                <children>
+                    <Label layoutX="269.0" layoutY="12.0" styleClass="title-label" text="Интерфейс клиента банка" />
+                    <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                                <image>
+                                    <Image url="@menu.png" />
+                                </image>
+                            </ImageView>
+
+                        </graphic>
+                    </Button>
+
+                    <TableView fx:id="depositTable" layoutX="21.0" layoutY="61.0" prefHeight="200.0" prefWidth="758.0">
+                        <columns>
+                            <TableColumn fx:id="dateOpenColumn" prefWidth="120.5999813079834" text="Дата открытия" />
+                            <TableColumn fx:id="NameColumn" prefWidth="122.40000915527344" text="Название вклада" />
+                            <TableColumn fx:id="TypeColumn" prefWidth="110.79998779296875" text="Тип" />
+                            <TableColumn fx:id="RateColumn" prefWidth="67.79998779296875" text="Ставка" />
+                            <TableColumn fx:id="CountColumn" prefWidth="104.00003051757812" text="Сумма" />
+                            <TableColumn fx:id="TermColumn" prefWidth="62.79998779296875" text="Срок" />
+                            <TableColumn fx:id="StatusColumn" prefWidth="90.39996337890625" text="Статус" />
+                            <TableColumn fx:id="ProlongColumn" prefWidth="75.99997558593748" text="Пролонг" />
+                        </columns>
+                    </TableView>
+
+                    <VBox spacing="10">
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+                    </VBox>
+
+                    <Button fx:id="closeDeposit" layoutX="682.0" layoutY="270.0" mnemonicParsing="false" onAction="#closeD" text="Закрыть вклад" />
+                    <Button fx:id="prolongDeposit" layoutX="558.0" layoutY="270.0" mnemonicParsing="false" onAction="#prolongD" text="Продлить вклад" />
+                    <Button fx:id="openDeposit" layoutX="394.0" layoutY="270.0" mnemonicParsing="false" onAction="#openD" text="Открыть новый вклад" />
+
+                </children>
+            </AnchorPane>
+        </ScrollPane>
+
+        <Label layoutX="260.0" layoutY="10.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Система контроля вкладов" textFill="WHITE">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonExit" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+    </children>
+</AnchorPane>

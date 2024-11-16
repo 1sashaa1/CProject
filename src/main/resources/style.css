@@ -45,3 +45,6 @@
 .icon-button:hover {
     -fx-background-color: #f0f0f0;
 }
+.selected-row {
+    -fx-background-color: #296caf;
+}

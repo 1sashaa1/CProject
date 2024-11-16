@@ -39,7 +39,7 @@ public class FirstPageEmp {
 
     public void openNewsletter(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) newsletterButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("Notification.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ENotification.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

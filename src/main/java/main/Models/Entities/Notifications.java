@@ -8,6 +8,7 @@ public class Notifications {
     private String message;
     private boolean isRead;
 
+
     public int getId() {
         return id;
     }
@@ -40,4 +41,5 @@ public class Notifications {
     public void setRead(boolean read) {
         isRead = read;
     }
+
 }

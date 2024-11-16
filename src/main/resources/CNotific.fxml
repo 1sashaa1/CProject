@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CNotification">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+
+        <Label layoutX="260.0" layoutY="10.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Система контроля вкладов" textFill="#fafafa" />
+
+        <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+            <graphic>
+                <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                    <image>
+                        <Image url="@menu.png" />
+                    </image>
+                </ImageView>
+
+            </graphic>
+        </Button>
+
+        <Button fx:id="buttonExit" layoutX="700.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+
+        <VBox layoutX="50.0" layoutY="60.0" prefWidth="700.0" spacing="15.0">
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="filter-pane">
+                <Label text="Поиск по статусу:" textFill="#ffffff"/>
+            <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Выберите статус" />
+                <Label text="Поиск по теме:" textFill="#ffffff"/>
+                <TextField fx:id="searchField" promptText="Введите тему рассылки" />
+                <Button onAction="#searchNotifications" style="-fx-background-color: #ffffff;" text="Поиск" />
+            </HBox>
+
+            <ScrollPane prefHeight="246.0" prefWidth="700.0" styleClass="content-pane">
+                <TableView fx:id="notificationTable" prefHeight="224.0" prefWidth="701.0">
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="176.00001525878906" text="ID" />
+                        <TableColumn fx:id="messageColumn" prefWidth="282.3999786376953" text="Тема" />
+                        <TableColumn fx:id="readStatusColumn" prefWidth="242.79998779296875" text="Статус" />
+
+                    </columns>
+                </TableView>
+            </ScrollPane>
+        </VBox>
+    </children>
+</AnchorPane>

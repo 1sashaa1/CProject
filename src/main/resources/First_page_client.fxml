@@ -55,6 +55,18 @@
                      </ImageView></graphic>
                </Button>
             </Pane>
+            <Pane layoutX="43.0" layoutY="229.0" prefHeight="120.0" prefWidth="262.0" styleClass="frame" >
+               <Label layoutX="10.0" layoutY="10.0" styleClass="frame-title" text="Доступные рассылки" />
+               <Label layoutX="10.0" layoutY="40.0" styleClass="frame-description" text="Рассылки о обновлениях системы." />
+               <Button fx:id="notifButton" layoutX="50.0" layoutY="67.0" onAction="#openNotifications" prefHeight="39.0" prefWidth="156.0" styleClass="icon-button" text="Рассылки">
+                  <graphic>
+                     <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                        <image>
+                           <Image url="@mail.png" />
+                        </image>
+                     </ImageView></graphic>
+               </Button>
+            </Pane>
          </children>
 
       </AnchorPane>
