@@ -2,7 +2,7 @@ package main.Models.Entities;
 
 public class Deposit {
     private int id;
-    private String name;
+    private String nameDeposit;
     private String type;
     private double interestRate;
     private double minAmount;
@@ -21,12 +21,12 @@ public class Deposit {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameDeposit() {
+        return nameDeposit;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameDeposit(String nameDeposit) {
+        this.nameDeposit = nameDeposit;
     }
 
     public String getType() {

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Confirmations">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+        <ScrollPane layoutY="66.0" prefHeight="700.0" prefWidth="800.0">
+            <AnchorPane layoutY="60.0" prefHeight="540.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" styleClass="content-pane">
+                <children>
+                    <Label layoutX="269.0" layoutY="12.0" styleClass="title-label" text="Интерфейс сотрудника банка" />
+                    <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                                <image>
+                                    <Image url="@menu.png" />
+                                </image>
+                            </ImageView>
+
+                        </graphic>
+                    </Button>
+
+                    <TableView fx:id="depositTable" layoutX="21.0" layoutY="56.0" prefHeight="161.0" prefWidth="758.0">
+                        <columns>
+                            <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
+                            <TableColumn fx:id="NameDepositColumn" prefWidth="165.59999084472656" text="Название вклада" />
+                            <TableColumn fx:id="TypeColumn" prefWidth="128.00006103515625" text="Тип" />
+                            <TableColumn fx:id="RateColumn" prefWidth="77.20001220703125" text="Ставка" />
+                            <TableColumn fx:id="MinCountColumn" prefWidth="93.0" text="Мин. сумма" />
+                            <TableColumn fx:id="TermColumn" prefWidth="54.4000244140625" text="Срок" />
+                            <TableColumn fx:id="AddColumn" prefWidth="63.5999755859375" text="Пополн" />
+                            <TableColumn fx:id="TransactionColumn" minWidth="10.0" prefWidth="61.79998779296875" text="Транз" />
+                            <TableColumn fx:id="ProlongationColumn" prefWidth="65.20001220703125" text="Пролонг" />
+                        </columns>
+                    </TableView>
+
+                    <TableView fx:id="confTable" layoutX="11.0" layoutY="228.0" prefHeight="200.0" prefWidth="778.0">
+                        <columns>
+                            <TableColumn fx:id="NameColumn" prefWidth="158.39999103546143" text="Название вклада" />
+                            <TableColumn fx:id="StatusColumn" prefWidth="102.40000915527344" text="Статус" />
+                            <TableColumn fx:id="DateColumn" prefWidth="131.39996337890625" text="Дата открытия" />
+                            <TableColumn fx:id="SumColumn" minWidth="10.0" prefWidth="93.39996337890625" text="Сумма" />
+                            <TableColumn fx:id="ClientNameColumn" minWidth="10.0" prefWidth="115.20001220703125" text="Имя клиента" />
+                            <TableColumn fx:id="ClientPColumn" minWidth="10.0" prefWidth="100.4000244140625" text="Отчество" />
+                            <TableColumn fx:id="ClientSecondNameColumn" minWidth="0.0" prefWidth="73.60001220703123" text="Фамилия" />
+                        </columns>
+                    </TableView>
+
+                    <HBox layoutX="21.0" layoutY="436.0" prefHeight="35.0" prefWidth="519.0" spacing="10">
+                        <Label prefHeight="25.0" prefWidth="80.0" text="Сумма вклада:" />
+                        <TextField fx:id="depositAmountField" promptText="Введите сумму" />
+                        <Label prefHeight="26.0" prefWidth="83.0" text="Дата открытия:" />
+                        <DatePicker fx:id="depositDatePicker" />
+                    </HBox>
+
+
+                    <VBox spacing="10">
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+
+                        <HBox spacing="10" />
+                    </VBox>
+
+                    <Button fx:id="deleteDeposit" layoutX="726.0" layoutY="436.0" mnemonicParsing="false" onAction="#deleteD" text="Удалить" />
+                    <Button fx:id="changeDeposit" layoutX="638.0" layoutY="436.0" mnemonicParsing="false" onAction="#changeD" text="Изменить" />
+                     <Button fx:id="closeDepositButton" layoutX="24.0" layoutY="482.0" onAction="#closeDeposit" text="Закрыть" />
+                     <Button fx:id="openDepositButton" layoutX="101.0" layoutY="482.0" onAction="#openDeposit" text="Открыть" />
+
+                </children>
+            </AnchorPane>
+        </ScrollPane>
+
+        <Label layoutX="260.0" layoutY="10.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Система контроля вкладов" textFill="WHITE">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonExit" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+    </children>
+</AnchorPane>

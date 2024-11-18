@@ -9,16 +9,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import main.Enums.RequestType;
 import main.Enums.ResponseStatus;
-import main.Enums.Roles;
 import main.Models.Entities.Deposit;
-import main.Models.Entities.User;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -78,6 +75,8 @@ public class EDeposits {
     private ObservableList<Deposit> depositsList = FXCollections.observableArrayList();
 
     public void initialize() {
+        depositTable.setItems(depositsList);
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -88,7 +87,6 @@ public class EDeposits {
         TransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactions"));
         ProlongationColumn.setCellValueFactory(new PropertyValueFactory<>("prolongation"));
 
-        depositTable.setItems(depositsList);
         try {
             loadDataFromDatabase();
         } catch (IOException e) {
@@ -106,7 +104,7 @@ public class EDeposits {
     public void addDeposit(ActionEvent actionEvent) {
         if (validateFields()) {
             Deposit deposit = new Deposit();
-            deposit.setName(nameField.getText());
+            deposit.setNameDeposit(nameField.getText());
             deposit.setType((String) depositTypeComboBox.getValue());
             deposit.setInterestRate(Double.parseDouble(interestRateField.getText()));
             deposit.setMinAmount(Double.parseDouble(minAmountField.getText()));
@@ -118,6 +116,7 @@ public class EDeposits {
             saveToDatabase(deposit);
             depositTable.getItems().add(deposit);
             clearFields();
+            initialize();
 
         } else {
             System.out.println("Ошибка: Не все поля заполнены корректно");
@@ -246,6 +245,7 @@ public class EDeposits {
                 }
 
                 depositsList.remove(selectedDeposit);
+                initialize();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -255,6 +255,7 @@ public class EDeposits {
 
             alert.showAndWait();
         }
+
     }
 
 
@@ -270,7 +271,7 @@ public class EDeposits {
             Optional<ButtonType> result = confirmationAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
 
-                selectedDeposit.setName(nameField.getText());
+                selectedDeposit.setNameDeposit(nameField.getText());
                 selectedDeposit.setType((String) depositTypeComboBox.getValue());
                 selectedDeposit.setInterestRate(Double.parseDouble(interestRateField.getText()));
                 selectedDeposit.setMinAmount(Double.parseDouble(minAmountField.getText()));
@@ -292,6 +293,7 @@ public class EDeposits {
                 }
 
                 depositTable.refresh();
+                initialize();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -307,5 +309,11 @@ public class EDeposits {
         Parent root = FXMLLoader.load(getClass().getResource("First_page_employee.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+    }
+
+    public void openDeposit(ActionEvent actionEvent) {
+    }
+
+    public void closeDeposit(ActionEvent actionEvent) {
     }
 }

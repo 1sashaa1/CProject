@@ -63,6 +63,8 @@ public class ListDeposits {
 
 
     public void initialize() {
+        depositTable.setItems(depositsList);
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -73,7 +75,6 @@ public class ListDeposits {
         TransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactions"));
         ProlongationColumn.setCellValueFactory(new PropertyValueFactory<>("prolongation"));
 
-        depositTable.setItems(depositsList);
         try {
             loadDataFromDatabase();
         } catch (IOException e) {
@@ -241,7 +242,7 @@ public class ListDeposits {
             depositBox.setPadding(new Insets(10));
             depositBox.setStyle("-fx-border-color: #3c9d7a; -fx-background-color: #f0f0f0; -fx-border-radius: 5; -fx-background-radius: 5;");
 
-            Label nameLabel = new Label("Название: " + deposit.getName());
+            Label nameLabel = new Label("Название: " + deposit.getNameDeposit());
             Label typeLabel = new Label("Тип: " + deposit.getType());
             Label rateLabel = new Label("Процентная ставка: " + deposit.getInterestRate());
             Label minCountLabel = new Label("Мин. сумма: " + deposit.getMinAmount());

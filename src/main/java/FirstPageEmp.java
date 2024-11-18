@@ -13,6 +13,12 @@ public class FirstPageEmp {
     @FXML
     public Button newsletterButton;
     @FXML
+    public Button confirmButton;
+    @FXML
+    public Button questionsButton;
+    @FXML
+    public Button depositButton;
+    @FXML
     private Button buttonExit;
 
     Image image1 = new Image(getClass().getResourceAsStream("edit.png"));
@@ -31,7 +37,7 @@ public class FirstPageEmp {
     }
 
     public void openDeposits(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Stage stage = (Stage) depositButton.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("EDeposits.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
@@ -44,6 +50,10 @@ public class FirstPageEmp {
         stage.setScene(newScene);
     }
 
-    public void openConfirmations(ActionEvent actionEvent) {
+    public void openConfirmations(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) confirmButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("Confirmations.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
     }
 }
