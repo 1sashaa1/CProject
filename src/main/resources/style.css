@@ -48,3 +48,79 @@
 .selected-row {
     -fx-background-color: #296caf;
 }
+
+.button{
+    -fx-background-color: #29a129;
+}
+
+/**/
+
+.content-pane {
+    -fx-background-color: #eafbea; /* Светло-зелёный */
+}
+
+/* Заголовки */
+.title-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #006400; /* Тёмно-зелёный */
+}
+
+/* Кнопки */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #006400;
+    -fx-border-width: 2px;
+    -fx-text-fill: #006400;
+    -fx-opacity: 0.4;
+}
+
+.icon-button:hover {
+    -fx-background-color: #a3d9a5; /* Светло-зелёный при наведении */
+}
+
+#deleteDeposit,
+#changeDeposit,
+#closeDepositButton,
+#openDepositButton {
+    -fx-background-color: #006400;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: #004d00; /* Темнее для контраста */
+    -fx-border-width: 2px;
+}
+
+#deleteDeposit:hover,
+#changeDeposit:hover,
+#closeDepositButton:hover,
+#openDepositButton:hover {
+    -fx-background-color: #32cd32; /* Ярко-зелёный */
+    -fx-border-color: #228b22;
+}
+
+/* Текстовые поля */
+#depositAmountField {
+    -fx-background-color: #f0fff0; /* Светло-зелёный */
+    -fx-border-color: #006400;
+    -fx-border-radius: 4px;
+    -fx-border-width: 2px;
+}
+
+/* Таблицы */
+.table-view {
+    -fx-background-color: #eafbea; /* Фон таблицы */
+    -fx-table-cell-border-color: #006400;
+}
+
+.table-view .column-header {
+    -fx-background-color: #32cd32;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Элементы выбора даты */
+.date-picker {
+    -fx-background-color: #f0fff0;
+    -fx-border-color: #006400;
+    -fx-border-width: 2px;
+}

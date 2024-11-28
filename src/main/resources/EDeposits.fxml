@@ -62,7 +62,7 @@
                             <FXCollections fx:factory="observableArrayList">
                                 <String fx:value="Срочный" />
                                 <String fx:value="Условный" />
-                                <String fx:value="'До востребования'" />
+                                <String fx:value="До востребования" />
                             </FXCollections>
                         </items>
                     </ComboBox>

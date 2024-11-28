@@ -12,6 +12,7 @@ public class FirstPageClient {
     public Button notifButton;
     public Button buttonExit;
     public Button confirmButton;
+    public Button depositButton;
 
     public void openList(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) notifButton.getScene().getWindow();
@@ -20,7 +21,11 @@ public class FirstPageClient {
         stage.setScene(newScene);
     }
 
-    public void openQuestions(ActionEvent actionEvent) {
+    public void openQuestions(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) notifButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("MyQuestions.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
     }
 
     public void openExtract(ActionEvent actionEvent) {

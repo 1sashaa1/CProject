@@ -35,7 +35,7 @@
 
                     <ComboBox fx:id="clientList" layoutX="50.0" layoutY="220.0" prefWidth="700.0" promptText="Выберите клиента" />
 
-                    <Button fx:id="sendMessageButton" layoutX="600.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" textFill="#0b0b0b" />
+                    <Button fx:id="sendMessageButton" layoutX="578.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="172.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" textFill="#0b0b0b" />
 
                 </children>
             </AnchorPane>

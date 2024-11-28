@@ -11,17 +11,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import main.Enums.RequestType;
 import main.Enums.ResponseStatus;
-import main.Models.Entities.ClientsDeposits;
 import main.Models.Entities.Deposit;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
-import main.idea.DTO.ClientsDepositsDTO;
+import main.idea.DTO.RequestClientsDepositsDTO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Confirmations {
     public Button deleteDeposit;
@@ -53,7 +51,7 @@ public class Confirmations {
     public TableColumn NameDepositColumn;
 
     private ObservableList<Deposit> depositsList = FXCollections.observableArrayList();
-    private ObservableList<ClientsDepositsDTO> clientsdepositsList = FXCollections.observableArrayList();
+    private ObservableList<RequestClientsDepositsDTO> clientsdepositsList = FXCollections.observableArrayList();
 
     public void initialize() {
 
@@ -155,7 +153,7 @@ public class Confirmations {
                     if (response2.getResponseStatus() == ResponseStatus.OK) {
                         String jsonResponse = response2.getResponseUser();
 
-                        ClientsDepositsDTO[] clientDepositsArray = new Gson().fromJson(jsonResponse, ClientsDepositsDTO[].class);
+                        RequestClientsDepositsDTO[] clientDepositsArray = new Gson().fromJson(jsonResponse, RequestClientsDepositsDTO[].class);
                         Platform.runLater(() -> {
                             clientsdepositsList.clear();
                             clientsdepositsList.addAll(clientDepositsArray);
@@ -184,7 +182,7 @@ public class Confirmations {
     }
 
     public void closeDeposit(ActionEvent actionEvent) {
-        ClientsDepositsDTO selectedDeposit = (ClientsDepositsDTO) confTable.getSelectionModel().getSelectedItem();
+        RequestClientsDepositsDTO selectedDeposit = (RequestClientsDepositsDTO) confTable.getSelectionModel().getSelectedItem();
         if (selectedDeposit == null) {
             showAlert("Ошибка", "Выберите вклад для закрытия!");
             return;
@@ -195,7 +193,7 @@ public class Confirmations {
 
         Request request = new Request();
         request.setRequestType(RequestType.ECLOSEDEPOSIT);
-        request.setRequestMessage(new Gson().toJson(new ClientsDepositsDTO(
+        request.setRequestMessage(new Gson().toJson(new RequestClientsDepositsDTO(
                 selectedDeposit.getIdDeposit(),
                 selectedDeposit.getNameDeposit(),
                 0,
@@ -217,7 +215,7 @@ public class Confirmations {
     }
 
     public void openDeposit(ActionEvent actionEvent) {
-        ClientsDepositsDTO selectedDeposit = (ClientsDepositsDTO) confTable.getSelectionModel().getSelectedItem();
+        RequestClientsDepositsDTO selectedDeposit = (RequestClientsDepositsDTO) confTable.getSelectionModel().getSelectedItem();
         if (selectedDeposit == null) {
             showAlert("Ошибка", "Выберите вклад для открытия!");
             return;
@@ -239,7 +237,7 @@ public class Confirmations {
 
             Request request = new Request();
             request.setRequestType(RequestType.EOPENDEPOSIT);
-            request.setRequestMessage(new Gson().toJson(new ClientsDepositsDTO(
+            request.setRequestMessage(new Gson().toJson(new RequestClientsDepositsDTO(
                     selectedDeposit.getIdDeposit(),
                     selectedDeposit.getNameDeposit(),
                     amount,

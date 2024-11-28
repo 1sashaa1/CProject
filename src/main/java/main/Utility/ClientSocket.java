@@ -1,5 +1,6 @@
 package main.Utility;
 
+import main.Models.Entities.Client;
 import main.Models.Entities.Deposit;
 import main.Models.Entities.User;
 
@@ -11,6 +12,7 @@ import java.net.Socket;
 public class ClientSocket {
     private static final ClientSocket SINGLE_INSTANCE = new ClientSocket();
     private User user;
+    private Client client;
     private Deposit deposit;
     private static Socket socket;
     private BufferedReader in;
@@ -80,4 +82,7 @@ public class ClientSocket {
         this.out = out;
     }
 
+    public Client getClient() { return client;
+    }
+    public void setClient(Client client) {this.client = client;}
 }

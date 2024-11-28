@@ -61,7 +61,7 @@ public class Deposit {
         this.term = term;
     }
 
-    public boolean isReplenishment() {
+    public boolean getReplenishment() {
         return isReplenishment;
     }
 
@@ -69,7 +69,7 @@ public class Deposit {
         this.isReplenishment = isReplenishment;
     }
 
-    public boolean isTransactions() {
+    public boolean getTransactions() {
         return isTransactions;
     }
 
@@ -77,7 +77,7 @@ public class Deposit {
         this.isTransactions = isTransactions;
     }
 
-    public boolean isProlongation() {
+    public boolean getProlongation() {
         return isProlongation;
     }
 

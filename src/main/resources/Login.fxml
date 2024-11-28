@@ -4,7 +4,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Login">
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
    <children>
       <AnchorPane layoutY="66.0" prefHeight="334.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
          <children>

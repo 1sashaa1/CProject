@@ -33,7 +33,11 @@ public class FirstPageEmp {
         stage.setScene(newScene);
     }
 
-    public void openQuestions(ActionEvent actionEvent) {
+    public void openQuestions(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) depositButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("QuestionRequestCl.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
     }
 
     public void openDeposits(ActionEvent actionEvent) throws IOException {

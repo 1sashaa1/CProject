@@ -2,22 +2,20 @@ package main.idea.DTO;
 
 import java.util.Date;
 
-public class ClientsDepositsDTO {
+public class RequestClientsDepositsDTO {
     private int idDeposit;
     private String nameDeposit;
-
     private boolean isOpen;
     private double firstAmount;
     private Date openingDate;
-
     private String name;
     private String surname;
     private String patronymic;
 
-    public ClientsDepositsDTO() {
+    public RequestClientsDepositsDTO() {
     }
 
-    public ClientsDepositsDTO(int idDeposit, String nameDeposit,double firstAmount, Date openingDate, boolean isOpen) {
+    public RequestClientsDepositsDTO(int idDeposit, String nameDeposit, double firstAmount, Date openingDate, boolean isOpen) {
         this.idDeposit = idDeposit;
         this.nameDeposit = nameDeposit;
         this.isOpen = isOpen;

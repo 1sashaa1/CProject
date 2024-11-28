@@ -78,7 +78,7 @@ public class EDeposits {
         depositTable.setItems(depositsList);
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        NameColumn.setCellValueFactory(new PropertyValueFactory<>("nameDeposit"));
         TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         RateColumn.setCellValueFactory(new PropertyValueFactory<>("interestRate"));
         MinCountColumn.setCellValueFactory(new PropertyValueFactory<>("minAmount"));

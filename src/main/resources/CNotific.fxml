@@ -2,10 +2,10 @@
 
 <?import java.net.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CNotification">
+<AnchorPane prefHeight="486.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CNotification">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -29,15 +29,15 @@
         <VBox layoutX="50.0" layoutY="60.0" prefWidth="700.0" spacing="15.0">
 
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="filter-pane">
-                <Label text="Поиск по статусу:" textFill="#ffffff"/>
+                <Label text="Поиск по статусу:" textFill="#ffffff" />
             <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Выберите статус" />
-                <Label text="Поиск по теме:" textFill="#ffffff"/>
-                <TextField fx:id="searchField" promptText="Введите тему рассылки" />
+                <Label text="Поиск по теме:" textFill="#ffffff" />
+                <TextField fx:id="subjectFilter" promptText="Введите тему рассылки" />
                 <Button onAction="#searchNotifications" style="-fx-background-color: #ffffff;" text="Поиск" />
             </HBox>
 
-            <ScrollPane prefHeight="246.0" prefWidth="700.0" styleClass="content-pane">
-                <TableView fx:id="notificationTable" prefHeight="224.0" prefWidth="701.0">
+            <ScrollPane prefHeight="339.0" prefWidth="700.0" styleClass="content-pane">
+                <TableView fx:id="notificationTable" prefHeight="343.0" prefWidth="702.0">
                     <columns>
                         <TableColumn fx:id="idColumn" prefWidth="176.00001525878906" text="ID" />
                         <TableColumn fx:id="messageColumn" prefWidth="282.3999786376953" text="Тема" />
@@ -47,5 +47,7 @@
                 </TableView>
             </ScrollPane>
         </VBox>
+        <Button fx:id="markAsReadButton" layoutX="316.0" layoutY="446.0" onAction="#markSelectedAsRead" text="Пометить как прочитанное" />
+
     </children>
 </AnchorPane>

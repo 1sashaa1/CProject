@@ -25,6 +25,7 @@ import main.idea.DTO.Session;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 public class ListDeposits {
     @FXML
@@ -66,14 +67,14 @@ public class ListDeposits {
         depositTable.setItems(depositsList);
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        NameColumn.setCellValueFactory(new PropertyValueFactory<>("nameDeposit"));
         TypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         RateColumn.setCellValueFactory(new PropertyValueFactory<>("interestRate"));
         MinCountColumn.setCellValueFactory(new PropertyValueFactory<>("minAmount"));
         TermColumn.setCellValueFactory(new PropertyValueFactory<>("term"));
-        AddColumn.setCellValueFactory(new PropertyValueFactory<>("replenishment"));
-        TransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactions"));
-        ProlongationColumn.setCellValueFactory(new PropertyValueFactory<>("prolongation"));
+        AddColumn.setCellValueFactory(new PropertyValueFactory<>("Replenishment"));
+        TransactionColumn.setCellValueFactory(new PropertyValueFactory<>("Transactions"));
+        ProlongationColumn.setCellValueFactory(new PropertyValueFactory<>("Prolongation"));
 
         try {
             loadDataFromDatabase();
@@ -234,8 +235,41 @@ public class ListDeposits {
             return;
         }
 
+        // Диалоговое окно для ввода начальной суммы вклада
+        TextInputDialog inputDialog = new TextInputDialog("10000");
+        inputDialog.setTitle("Введите сумму");
+        inputDialog.setHeaderText("Введите начальную сумму для расчёта:");
+        inputDialog.setContentText("Сумма:");
+
+        Optional<String> result = inputDialog.showAndWait();
+        if (!result.isPresent() || result.get().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Сравнение депозитов");
+            alert.setHeaderText(null);
+            alert.setContentText("Начальная сумма не введена. Операция отменена.");
+            alert.showAndWait();
+            return;
+        }
+
+        double initialAmount;
+        try {
+            initialAmount = Double.parseDouble(result.get());
+            if (initialAmount <= 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка ввода");
+            alert.setHeaderText(null);
+            alert.setContentText("Пожалуйста, введите корректную положительную сумму.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Очистка области сравнения
         comparisonBox.getChildren().clear();
 
+        // Создание информации о каждом депозите
         for (Deposit deposit : selectedDeposits) {
             VBox depositBox = new VBox();
             depositBox.setSpacing(10);
@@ -248,11 +282,51 @@ public class ListDeposits {
             Label minCountLabel = new Label("Мин. сумма: " + deposit.getMinAmount());
             Label termLabel = new Label("Срок: " + deposit.getTerm());
 
-            depositBox.getChildren().addAll(nameLabel, typeLabel, rateLabel, minCountLabel, termLabel);
+            double finalAmount = calculateFinalAmount(initialAmount, deposit.getInterestRate(), deposit.getTerm(), deposit.getType());
+            Label initialAmountLabel = new Label("Начальная сумма: " + initialAmount);
+            Label finalAmountLabel = new Label("Итоговая сумма: " + finalAmount);
+
+            depositBox.getChildren().addAll(nameLabel, typeLabel, rateLabel, minCountLabel, termLabel, initialAmountLabel, finalAmountLabel);
 
             comparisonBox.getChildren().add(depositBox);
         }
     }
+
+    /**
+     * Метод для расчёта итоговой суммы вклада.
+     *
+     * @param initialAmount начальная сумма вклада.
+     * @param interestRate  процентная ставка (в десятичной форме, например, 0.08 для 8%).
+     * @param term          срок вклада в днях.
+     * @param type          тип вклада ("Срочный", "Словный", "До востребования").
+     * @return итоговая сумма.
+     */
+    private double calculateFinalAmount(double initialAmount, double interestRate, int term, String type) {
+        double result;
+
+        switch (type) {
+            case "Срочный":
+                result = initialAmount * (1 + interestRate * (term / 365.0));
+                break;
+
+            case "Условный":
+                int months = term / 30;
+                result = initialAmount * Math.pow(1 + interestRate / 12, months);
+                break;
+
+            case "До востребования":
+                result = initialAmount * Math.pow(1 + interestRate / 365, term);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Неизвестный тип вклада: " + type);
+        }
+        result = Math.round(result * 10.0) / 10.0;
+
+        return result;
+    }
+
+
     public void openMainPage(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("First_page_client.fxml"));

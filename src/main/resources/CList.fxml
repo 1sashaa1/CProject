@@ -26,16 +26,15 @@
                         </graphic>
                     </Button>
 
-                    <TableView fx:id="depositTable" layoutX="21.0" layoutY="61.0" prefHeight="200.0" prefWidth="758.0">
+                    <TableView fx:id="depositTable" layoutX="21.0" layoutY="75.0" prefHeight="276.0" prefWidth="758.0">
                         <columns>
-                            <TableColumn fx:id="dateOpenColumn" prefWidth="120.5999813079834" text="Дата открытия" />
-                            <TableColumn fx:id="NameColumn" prefWidth="122.40000915527344" text="Название вклада" />
-                            <TableColumn fx:id="TypeColumn" prefWidth="110.79998779296875" text="Тип" />
-                            <TableColumn fx:id="RateColumn" prefWidth="67.79998779296875" text="Ставка" />
-                            <TableColumn fx:id="CountColumn" prefWidth="104.00003051757812" text="Сумма" />
-                            <TableColumn fx:id="TermColumn" prefWidth="62.79998779296875" text="Срок" />
-                            <TableColumn fx:id="StatusColumn" prefWidth="90.39996337890625" text="Статус" />
-                            <TableColumn fx:id="ProlongColumn" prefWidth="75.99997558593748" text="Пролонг" />
+                            <TableColumn fx:id="dateOpenColumn" prefWidth="129.79999542236328" text="Дата открытия" />
+                            <TableColumn fx:id="NameColumn" prefWidth="171.20004272460938" text="Название вклада" />
+                            <TableColumn fx:id="TypeColumn" prefWidth="91.4000244140625" text="Тип" />
+                            <TableColumn fx:id="RateColumn" prefWidth="84.0" text="Ставка" />
+                            <TableColumn fx:id="CountColumn" prefWidth="103.0" text="Сумма" />
+                            <TableColumn fx:id="TermColumn" prefWidth="89.4000244140625" text="Срок" />
+                            <TableColumn fx:id="ProlongColumn" prefWidth="86.39999999999998" text="Пролонг" />
                         </columns>
                     </TableView>
 
@@ -54,9 +53,10 @@
                         <HBox spacing="10" />
                     </VBox>
 
-                    <Button fx:id="closeDeposit" layoutX="682.0" layoutY="270.0" mnemonicParsing="false" onAction="#closeD" text="Закрыть вклад" />
-                    <Button fx:id="prolongDeposit" layoutX="558.0" layoutY="270.0" mnemonicParsing="false" onAction="#prolongD" text="Продлить вклад" />
-                    <Button fx:id="openDeposit" layoutX="394.0" layoutY="270.0" mnemonicParsing="false" onAction="#openD" text="Открыть новый вклад" />
+                    <Button fx:id="closeDeposit" layoutX="440.0" layoutY="375.0" mnemonicParsing="false" onAction="#closeD" prefHeight="35.0" prefWidth="114.0" text="Закрыть вклад" />
+                    <Button fx:id="prolongDeposit" layoutX="256.0" layoutY="375.0" mnemonicParsing="false" onAction="#prolongD" prefHeight="35.0" prefWidth="144.0" text="Продлить вклад" />
+                    <Button fx:id="openDeposit" layoutX="74.0" layoutY="375.0" mnemonicParsing="false" onAction="#openD" prefHeight="35.0" prefWidth="153.0" text="Открыть новый вклад" />
+               <Button layoutX="601.0" layoutY="375.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="121.0" text="Выписка по вкладу" />
 
                 </children>
             </AnchorPane>

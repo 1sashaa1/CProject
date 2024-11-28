@@ -1,12 +1,10 @@
 package main.Models.Entities;
 
-import java.time.LocalDateTime;
-
 public class Notifications {
     private int id;
     private int clientId;
     private String message;
-    private boolean isRead;
+    private boolean read;
 
 
     public int getId() {
@@ -35,11 +33,11 @@ public class Notifications {
 
 
     public boolean isRead() {
-        return isRead;
+        return read;
     }
 
     public void setRead(boolean read) {
-        isRead = read;
+        this.read = read;
     }
 
 }

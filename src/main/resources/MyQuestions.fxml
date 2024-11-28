@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="681.0" prefWidth="1000.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyQuestion">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+        <AnchorPane layoutY="60.0" prefHeight="635.0" prefWidth="1000.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
+            <children>
+                <Label layoutX="354.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Ваши вопросы и ответы" textFill="#101010" />
+                <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                            <image>
+                                <Image url="@menu.png" />
+                            </image>
+                        </ImageView>
+
+                    </graphic>
+                </Button>
+                <!-- Поле для написания нового вопроса -->
+                <Label layoutX="50.0" layoutY="65.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Задать вопрос" textFill="#101010" />
+                <TextArea fx:id="questionText" layoutX="50.0" layoutY="95.0" prefHeight="100.0" prefWidth="700.0" promptText="Введите ваш вопрос..." />
+                <Button fx:id="sendQuestionButton" layoutX="761.0" layoutY="168.0" mnemonicParsing="false" onAction="#sendQuestion" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #0d850d;" text="Отправить" textFill="WHITE" />
+
+                <!-- Список вопросов и ответов -->
+                <Label layoutX="49.0" layoutY="217.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Ваши вопросы и ответы" textFill="#101010" />
+                <ListView fx:id="questionsAndAnswersList" layoutX="50.0" layoutY="249.0" prefHeight="300.0" prefWidth="900.0" />
+
+            </children>
+        </AnchorPane>
+        <Label layoutX="352.0" layoutY="13.0" text="Система контроля вкладов" textFill="#faf9f9">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonExit" layoutX="874.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+    </children>
+</AnchorPane>

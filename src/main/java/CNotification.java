@@ -18,6 +18,7 @@ import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.List;
 import com.google.gson.reflect.TypeToken;
 import main.idea.DTO.Session;
@@ -55,9 +56,49 @@ public class CNotification {
     @FXML
     public ComboBox statusFilter;
     public Button backButton;
+    public Button markAsReadButton;
 
     private int clientId = Session.getClientId();
     private List<Notifications> allNotifications = new ArrayList<>();
+
+    @FXML
+    public void initialize() {
+        ObservableList<String> citizenshipOptions = FXCollections.observableArrayList(
+                "Новое",
+                "Просмотрено"
+        );
+        statusFilter.setItems(citizenshipOptions);
+        
+        getAllNotifications(notifications -> {
+            if (notifications != null) {
+                allNotifications = notifications;
+
+                notificationTable.getItems().setAll(allNotifications);
+                notificationTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+                idColumn.setSortable(true);
+                messageColumn.setSortable(true);
+                readStatusColumn.setSortable(true);
+            } else {
+                System.err.println("Ошибка: Уведомления не были загружены.");
+            }
+        });
+    }
+
+
+    private void updateNotificationsOnServer(List<Notifications> notifications) {
+        Request request = new Request();
+        request.setRequestType(RequestType.UPDATE_NOTIFICATIONS);
+        request.setRequestMessage(new Gson().toJson(notifications));
+
+        PrintWriter out = ClientSocket.getInstance().getOut();
+        if (out != null) {
+            out.println(new Gson().toJson(request));
+            out.flush();
+        } else {
+            System.err.println("Ошибка: PrintWriter равен null. Проверьте соединение.");
+        }
+    }
 
     public void setClientId(int clientId) {
         this.clientId = clientId;
@@ -71,17 +112,25 @@ public class CNotification {
     }
 
     public void searchNotifications(ActionEvent actionEvent) {
-        String searchText = searchField.getText();
-        if (searchText != null && !searchText.isEmpty()) {
-            List<String> foundNotifications = findNotifications(searchText);
-            notificationList.getItems().setAll(foundNotifications);
-        } else {
-            List<String> messages = allNotifications.stream()
-                    .map(Notifications::getMessage)
-                    .collect(Collectors.toList());
-            notificationList.getItems().setAll(messages);
-        }
+        String searchText = subjectFilter.getText().toLowerCase();
+        String selectedStatus = (String) statusFilter.getValue();
+
+        List<Notifications> filteredNotifications = allNotifications.stream()
+                .filter(notification -> {
+                    boolean matchesSearch = searchText.isEmpty() ||
+                            (notification.getMessage() != null &&
+                                    notification.getMessage().toLowerCase().contains(searchText));
+                    boolean matchesStatus = selectedStatus == null ||
+                            (selectedStatus.equals("Просмотрено") && notification.isRead()) ||
+                            (selectedStatus.equals("Новое") && !notification.isRead());
+
+                    return matchesSearch && matchesStatus;
+                })
+                .collect(Collectors.toList());
+
+        notificationTable.getItems().setAll(filteredNotifications);
     }
+
 
     private void getAllNotifications(Consumer<List<Notifications>> callback) {
         int clientId = Session.getClientId();
@@ -111,19 +160,21 @@ public class CNotification {
 
                         Type listType = new TypeToken<List<Notifications>>() {}.getType();
                         List<Notifications> notifications = new Gson().fromJson(jsonResponse, listType);
+                                notifications.forEach(notification ->
+                                        System.out.println("ID: " + notification.getId() + ", Read: " + notification.isRead())
+                                );
 
                         Platform.runLater(() -> {
                             if (notificationTable != null) {
                                 // Устанавливаем источник данных для каждого столбца
                                 idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
                                 messageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
+                                readStatusColumn.setCellValueFactory(new PropertyValueFactory<>("read"));
 
-                                // Для столбца статуса добавляем проверку, чтобы отобразить "Прочитано" или "Не прочитано"
                                 readStatusColumn.setCellValueFactory(cellData ->
-                                        new SimpleStringProperty(cellData.getValue().isRead() ? "Прочитано" : "Не прочитано")
+                                        new SimpleStringProperty(cellData.getValue().isRead() ? "Прочитано" : "Новое")
                                 );
 
-                                // Устанавливаем данные в таблицу
                                 notificationTable.getItems().setAll(notifications);
                             } else {
                                 System.err.println("Ошибка: notificationTable не инициализирован.");
@@ -143,26 +194,6 @@ public class CNotification {
         }).start();
     }
 
-    @FXML
-    public void initialize() {
-        ObservableList<String> citizenshipOptions = FXCollections.observableArrayList(
-                "Не просмотрено",
-                "Просмотрено"
-        );
-
-        statusFilter.setItems(citizenshipOptions);
-
-        // Загружаем все уведомления и устанавливаем их в таблицу и список
-        getAllNotifications(notifications -> {
-            if (notifications != null) {
-                allNotifications = notifications; // Сохраняем все уведомления
-                notificationTable.getItems().setAll(allNotifications); // Заполняем таблицу уведомлениями
-            } else {
-                System.err.println("Ошибка: Уведомления не были загружены.");
-            }
-        });
-    }
-
     private List<String> findNotifications(String searchText) {
         return allNotifications.stream()
                 .filter(notification -> notification.getMessage() != null &&
@@ -177,4 +208,23 @@ public class CNotification {
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
+
+    @FXML
+    public void markSelectedAsRead(ActionEvent event) {
+        ObservableList<Notifications> selectedNotifications = notificationTable.getSelectionModel().getSelectedItems();
+
+        if (selectedNotifications.isEmpty()) {
+            System.out.println("Нет выбранных уведомлений.");
+            return;
+        }
+
+        for (Notifications notification : selectedNotifications) {
+            notification.setRead(true);
+        }
+
+        notificationTable.refresh();
+
+        updateNotificationsOnServer(new ArrayList<>(selectedNotifications));
+    }
+
 }

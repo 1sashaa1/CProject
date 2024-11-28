@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="681.0" prefWidth="1000.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuestionRequestCl">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+        <AnchorPane layoutY="60.0" prefHeight="635.0" prefWidth="1000.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
+            <children>
+                <Label layoutX="354.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Вопросы и запросы клиентов" textFill="#101010" />
+                <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
+                            <image>
+                                <Image url="@menu.png" />
+                            </image>
+                        </ImageView>
+
+                    </graphic>
+                </Button>
+                <!-- Список вопросов клиентов -->
+                <Label layoutX="50.0" layoutY="60.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Вопросы клиентов" textFill="#101010" />
+                <ListView fx:id="clientQuestionsList" layoutX="50.0" layoutY="90.0" prefHeight="200.0" prefWidth="400.0" />
+
+                <!-- Поле для ответа на вопросы -->
+                <TextArea fx:id="responseText" layoutX="500.0" layoutY="90.0" prefHeight="100.0" prefWidth="400.0" promptText="Введите ответ клиенту..." />
+                <Button fx:id="sendResponseButton" layoutX="820.0" layoutY="199.0" mnemonicParsing="false" onAction="#sendResponse" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: #0d850d;" text="Отправить" textFill="WHITE" />
+
+                <!-- Секция запросов на открытие вкладов -->
+                <Label layoutX="50.0" layoutY="300.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Запросы на открытие вкладов" textFill="#101010" />
+                <ListView fx:id="openDepositRequestsList" layoutX="50.0" layoutY="330.0" prefHeight="200.0" prefWidth="400.0" />
+                <Button fx:id="openDepositButton" layoutX="50.0" layoutY="540.0" mnemonicParsing="false" onAction="#openDepositPage" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: #0d850d;" text="Перейти к открытию вкладов" />
+
+                <!-- Секция запросов на закрытие вкладов -->
+                <Label layoutX="500.0" layoutY="300.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Запросы на закрытие вкладов" textFill="#101010" />
+                <ListView fx:id="closeDepositRequestsList" layoutX="500.0" layoutY="330.0" prefHeight="200.0" prefWidth="400.0" />
+                <Button fx:id="closeDepositButton" layoutX="500.0" layoutY="540.0" mnemonicParsing="false" onAction="#closeDepositPage" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: #0d850d;" text="Перейти к закрытию вкладов" />
+            </children>
+        </AnchorPane>
+        <Label layoutX="352.0" layoutY="13.0" text="Система контроля вкладов" textFill="#faf9f9">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonExit" layoutX="874.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+    </children>
+</AnchorPane>
