@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import main.Enums.RequestType;
 import main.Enums.ResponseStatus;
 import main.Models.Entities.Client;
+import main.Models.Entities.ClientsDeposits;
 import main.Models.Entities.Deposit;
 import main.Models.Entities.User;
 import main.Models.TCP.Request;
@@ -41,6 +42,7 @@ public class CList {
     public Button openDeposit;
     public Button buttonExit;
     public Button backButton;
+    public Button extract;
     private ObservableList<DepositListClient> depositsList = FXCollections.observableArrayList();
 
 
@@ -53,7 +55,6 @@ public class CList {
         RateColumn.setCellValueFactory(new PropertyValueFactory<>("interestRate"));
         TermColumn.setCellValueFactory(new PropertyValueFactory<>("term"));
         ProlongColumn.setCellValueFactory(new PropertyValueFactory<>("prolongation"));
-
 
         try {
             loadDataFromDatabase();
@@ -109,11 +110,10 @@ public class CList {
                 System.err.println("Ошибка при получении данных: " + e.getMessage());
             }
         }).start();
-
     }
 
     public void closeD(ActionEvent actionEvent) {
-        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
+        DepositListClient selectedDeposit = (DepositListClient) depositTable.getSelectionModel().getSelectedItem();
         if (selectedDeposit != null) {
             try {
                 int clientId = Session.getClientId();
@@ -121,7 +121,8 @@ public class CList {
                 request.setRequestType(RequestType.CLOSEDEPOSIT);
                 JsonObject requestMessage = new JsonObject();
                 requestMessage.addProperty("clientId", clientId);
-                requestMessage.addProperty("depositId", selectedDeposit.getId());
+                requestMessage.addProperty("depositId", selectedDeposit.getIdDeposit());
+                requestMessage.addProperty("nameDeposit", selectedDeposit.getNameDeposit());
 
                 request.setRequestMessage(new Gson().toJson(requestMessage));
 
@@ -134,7 +135,7 @@ public class CList {
                     System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
                 }
 
-                System.out.println("Отправлен запрос на закрытие депозита: " + selectedDeposit.getId());
+                System.out.println("Отправлен запрос на закрытие депозита: " + selectedDeposit.getIdDeposit());
 
                 new Thread(() -> {
                     try {
@@ -178,7 +179,68 @@ public class CList {
     }
 
     public void prolongD(ActionEvent actionEvent) {
+        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
+        if (selectedDeposit != null) {
+            try {
+                int clientId = Session.getClientId();
+                Request request = new Request();
+                request.setRequestType(RequestType.PROLONGDEPOSIT);
+                JsonObject requestMessage = new JsonObject();
+                requestMessage.addProperty("clientId", clientId);
+                requestMessage.addProperty("depositId", selectedDeposit.getId());
 
+                request.setRequestMessage(new Gson().toJson(requestMessage));
+
+                System.out.println("Запрос на продление депозита " + request.getRequestMessage());
+                PrintWriter out = ClientSocket.getInstance().getOut();
+                if (out != null) {
+                    out.println(new Gson().toJson(request));
+                    out.flush();
+                } else {
+                    System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+                }
+
+                System.out.println("Отправлен запрос на продление депозита: " + selectedDeposit.getId());
+
+                new Thread(() -> {
+                    try {
+                        String answer = ClientSocket.getInstance().getInStream().readLine();
+                        if (answer != null) {
+                            Response response = new Gson().fromJson(answer, Response.class);
+                            if (response.getResponseStatus() == ResponseStatus.OK) {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Продление депозита");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Депозит успешно отправлен на рассмотрение!");
+                                    alert.showAndWait();
+                                });
+                            } else {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Ошибка продления депозита");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Не удалось отправить запрос на продление.");
+                                    alert.showAndWait();
+                                });
+                            }
+                        }
+                    } catch (IOException e) {
+                        System.err.println("Ошибка при получении ответа: " + e.getMessage());
+                    }
+                }).start();
+
+            } catch (Exception e) {
+                System.err.println("Ошибка при попытке продлить депозит: " + e.getMessage());
+            }
+        } else {
+            // Если депозит не выбран, показать предупреждение
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Выбор депозита");
+            alert.setHeaderText(null);
+            alert.setContentText("Пожалуйста, выберите депозит для продления.");
+            alert.showAndWait();
+        }
     }
 
     public void openD(ActionEvent actionEvent) throws IOException {
@@ -200,5 +262,69 @@ public class CList {
         Parent root = FXMLLoader.load(getClass().getResource("First_page_client.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+    }
+
+    public void extract(ActionEvent actionEvent) {
+        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
+        if (selectedDeposit != null) {
+            try {
+                int clientId = Session.getClientId();
+                Request request = new Request();
+                request.setRequestType(RequestType.GETEXTRACT);
+                JsonObject requestMessage = new JsonObject();
+                requestMessage.addProperty("clientId", clientId);
+                requestMessage.addProperty("depositId", selectedDeposit.getId());
+
+                request.setRequestMessage(new Gson().toJson(requestMessage));
+
+                System.out.println("Запрос на получение выписки по депозиту" + request.getRequestMessage());
+                PrintWriter out = ClientSocket.getInstance().getOut();
+                if (out != null) {
+                    out.println(new Gson().toJson(request));
+                    out.flush();
+                } else {
+                    System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+                }
+
+                System.out.println("Отправлен запрос на получение выписки по депозиту: " + selectedDeposit.getId());
+
+                new Thread(() -> {
+                    try {
+                        String answer = ClientSocket.getInstance().getInStream().readLine();
+                        if (answer != null) {
+                            Response response = new Gson().fromJson(answer, Response.class);
+                            if (response.getResponseStatus() == ResponseStatus.OK) {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Выписка по депозиту");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Выписка успешно загружена!");
+                                    alert.showAndWait();
+                                });
+                            } else {
+                                Platform.runLater(() -> {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Ошибка при получении выписки по депозиту");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("Не удалось отправить запрос на получение выписки.");
+                                    alert.showAndWait();
+                                });
+                            }
+                        }
+                    } catch (IOException e) {
+                        System.err.println("Ошибка при получении выписки: " + e.getMessage());
+                    }
+                }).start();
+
+            } catch (Exception e) {
+                System.err.println("Ошибка при попытке получить выписку: " + e.getMessage());
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Выбор депозита");
+            alert.setHeaderText(null);
+            alert.setContentText("Пожалуйста, выберите депозит для получения выписки.");
+            alert.showAndWait();
+        }
     }
 }

@@ -61,6 +61,7 @@ public class ListDeposits {
 
     private final ObservableList<Deposit> depositsList = FXCollections.observableArrayList();
     private final ObservableList<Deposit> selectedDeposits = FXCollections.observableArrayList();
+    public Button changeDeposit;
 
 
     public void initialize() {
@@ -162,66 +163,97 @@ public class ListDeposits {
 
     public void openD(ActionEvent actionEvent) {
         Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
-        if (selectedDeposit != null) {
-            try {
-                int clientId = Session.getClientId();
-                Request request = new Request();
-                request.setRequestType(RequestType.OPENDEPOSIT);
-                JsonObject requestMessage = new JsonObject();
-                requestMessage.addProperty("clientId", clientId);
-                requestMessage.addProperty("depositId", selectedDeposit.getId());
+        TextInputDialog inputDialog = new TextInputDialog("10000");
+        inputDialog.setTitle("Введите сумму");
+        inputDialog.setHeaderText("Введите начальную сумму для открытия:");
+        inputDialog.setContentText("Сумма:");
 
-                request.setRequestMessage(new Gson().toJson(requestMessage));
+        Optional<String> result = inputDialog.showAndWait();
+        if (!result.isPresent() || result.get().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Открытие депозита");
+            alert.setHeaderText(null);
+            alert.setContentText("Начальная сумма не введена. Операция отменена.");
+            alert.showAndWait();
+            return;
+        }
+        double initialAmount;
+        try {
+            initialAmount = Double.parseDouble(result.get());
+            if (initialAmount <= 0) {
+                throw new NumberFormatException();
+            }
 
-                System.out.println("Запрос на открытие депозита " + request.getRequestMessage());
-                PrintWriter out = ClientSocket.getInstance().getOut();
-                if (out != null) {
-                    out.println(new Gson().toJson(request));
-                    out.flush();
-                } else {
-                    System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+            if (selectedDeposit != null) {
+                try {
+                    int clientId = Session.getClientId();
+                    Request request = new Request();
+                    request.setRequestType(RequestType.OPENDEPOSIT);
+                    JsonObject requestMessage = new JsonObject();
+                    requestMessage.addProperty("clientId", clientId);
+                    requestMessage.addProperty("depositId", selectedDeposit.getId());
+                    requestMessage.addProperty("initialAmount", initialAmount);
+
+                    request.setRequestMessage(new Gson().toJson(requestMessage));
+
+                    System.out.println("Запрос на открытие депозита " + request.getRequestMessage());
+                    PrintWriter out = ClientSocket.getInstance().getOut();
+                    if (out != null) {
+                        out.println(new Gson().toJson(request));
+                        out.flush();
+                    } else {
+                        System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+                    }
+
+                    System.out.println("Отправлен запрос на открытие депозита: " + selectedDeposit.getId());
+
+                    new Thread(() -> {
+                        try {
+                            String answer = ClientSocket.getInstance().getInStream().readLine();
+                            if (answer != null) {
+                                Response response = new Gson().fromJson(answer, Response.class);
+                                if (response.getResponseStatus() == ResponseStatus.OK) {
+                                    Platform.runLater(() -> {
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Открытие депозита");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Депозит успешно отправлен на рассмотрение!");
+                                        alert.showAndWait();
+                                    });
+                                } else {
+                                    Platform.runLater(() -> {
+                                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                                        alert.setTitle("Ошибка открытия депозита");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Не удалось открыть депозит.");
+                                        alert.showAndWait();
+                                    });
+                                }
+                            }
+                        } catch (IOException e) {
+                            System.err.println("Ошибка при получении ответа: " + e.getMessage());
+                        }
+                    }).start();
+
+                } catch (Exception e) {
+                    System.err.println("Ошибка при попытке открыть депозит: " + e.getMessage());
                 }
 
-                System.out.println("Отправлен запрос на открытие депозита: " + selectedDeposit.getId());
-
-                new Thread(() -> {
-                    try {
-                        String answer = ClientSocket.getInstance().getInStream().readLine();
-                        if (answer != null) {
-                            Response response = new Gson().fromJson(answer, Response.class);
-                            if (response.getResponseStatus() == ResponseStatus.OK) {
-                                Platform.runLater(() -> {
-                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                    alert.setTitle("Открытие депозита");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("Депозит успешно отправлен на рассмотрение!");
-                                    alert.showAndWait();
-                                });
-                            } else {
-                                Platform.runLater(() -> {
-                                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                                    alert.setTitle("Ошибка открытия депозита");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("Не удалось открыть депозит.");
-                                    alert.showAndWait();
-                                });
-                            }
-                        }
-                    } catch (IOException e) {
-                        System.err.println("Ошибка при получении ответа: " + e.getMessage());
-                    }
-                }).start();
-
-            } catch (Exception e) {
-                System.err.println("Ошибка при попытке открыть депозит: " + e.getMessage());
+            } else {
+                // Если депозит не выбран, показать предупреждение
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Выбор депозита");
+                alert.setHeaderText(null);
+                alert.setContentText("Пожалуйста, выберите депозит для открытия.");
+                alert.showAndWait();
             }
-        } else {
-            // Если депозит не выбран, показать предупреждение
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Выбор депозита");
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка ввода");
             alert.setHeaderText(null);
-            alert.setContentText("Пожалуйста, выберите депозит для открытия.");
+            alert.setContentText("Пожалуйста, введите корректную положительную сумму.");
             alert.showAndWait();
+            return;
         }
     }
 

@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Confirmations">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Confirmations">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
     <children>
-        <ScrollPane layoutY="66.0" prefHeight="700.0" prefWidth="800.0">
-            <AnchorPane layoutY="60.0" prefHeight="591.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" styleClass="content-pane">
+        <ScrollPane layoutY="66.0" prefHeight="500.0" prefWidth="800.0">
+            <AnchorPane layoutY="60.0" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #ffffff;" styleClass="content-pane">
                 <children>
                     <Label layoutX="269.0" layoutY="12.0" styleClass="title-label" text="Интерфейс сотрудника банка" />
                     <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="transparent-button">
@@ -51,13 +51,25 @@
                         </columns>
                     </TableView>
 
-                    <Button fx:id="deleteDeposit" layoutX="704.0" layoutY="501.0" mnemonicParsing="false" onAction="#deleteD" text="Удалить" styleClass="transparent-button" />
-                    <Button fx:id="changeDeposit" layoutX="605.0" layoutY="502.0" mnemonicParsing="false" onAction="#changeD" text="Изменить" styleClass="transparent-button" />
-                    <Button fx:id="closeDepositButton" layoutX="24.0" layoutY="539.0" onAction="#closeDeposit" text="Закрыть" styleClass="transparent-button" />
-                    <Button fx:id="openDepositButton" layoutX="106.0" layoutY="539.0" onAction="#openDeposit" text="Открыть" styleClass="transparent-button" />
-                    <DatePicker fx:id="depositDatePicker" layoutX="364.0" layoutY="502.0" styleClass="transparent-date-picker" />
-                    <Label layoutX="275.0" layoutY="501.0" prefHeight="26.0" prefWidth="83.0" text="Дата открытия:" />
-                    <TextField fx:id="depositAmountField" layoutX="116.0" layoutY="499.0" promptText="Введите сумму" styleClass="transparent-field" />
+                    <TableView fx:id="operationTable" layoutX="238.0" layoutY="512.0" prefHeight="164.0" prefWidth="378.0" styleClass="transparent-table">
+                        <columns>
+                            <TableColumn fx:id="DateReqColumn" prefWidth="158.39999103546143" text="Дата" />
+                            <TableColumn fx:id="RequestColumn" prefWidth="102.40000915527344" text="Запрос" />
+                            <TableColumn fx:id="SumReqColumn" prefWidth="131.39996337890625" text="Сумма" />
+                        </columns>
+                    </TableView>
+                    <Label layoutX="269.0" layoutY="680.0" styleClass="title-label" text="Посмотреть историю выполненных операций" onMouseClicked="#openDepositFile"/>
+
+
+                    <Button fx:id="deleteDeposit" layoutX="664.0" layoutY="497.0" mnemonicParsing="false" onAction="#deleteD" styleClass="transparent-button" text="Удалить" />
+                    <Button fx:id="changeDeposit" layoutX="664.0" layoutY="542.0" mnemonicParsing="false" onAction="#changeD" styleClass="transparent-button" text="Изменить" />
+                    <Button fx:id="closeDepositButton" layoutX="29.0" layoutY="677.0" onAction="#closeDeposit" styleClass="transparent-button" text="Закрыть" />
+                    <Button fx:id="openDepositButton" layoutX="104.0" layoutY="677.0" onAction="#openDeposit" styleClass="transparent-button" text="Открыть" />
+                    <Button fx:id="prolongationDepositButton" layoutX="104.0" layoutY="677.0" onAction="#openDeposit" styleClass="transparent-button" text="Продлить" />
+
+                    <DatePicker fx:id="depositDatePicker" layoutX="22.0" layoutY="599.0" styleClass="transparent-date-picker" />
+                    <Label layoutX="22.0" layoutY="573.0" prefHeight="26.0" prefWidth="83.0" text="Дата открытия:" />
+                    <TextField fx:id="depositAmountField" layoutX="23.0" layoutY="527.0" promptText="Введите сумму" styleClass="transparent-field" />
                     <Label layoutX="24.0" layoutY="499.0" prefHeight="25.0" prefWidth="80.0" text="Сумма вклада:" />
                 </children>
             </AnchorPane>

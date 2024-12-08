@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Login">
    <stylesheets>
       <URL value="@style.css" />
@@ -23,7 +23,7 @@
                </font>
             </Label>
             <PasswordField fx:id="passwordFieldPassword" layoutX="274.0" layoutY="154.0" />
-            <Label fx:id="labelMessage" layoutX="244.0" layoutY="183.0" prefHeight="18.0" prefWidth="214.0" text="Oops! Ошибка входа в систему" textAlignment="CENTER" textFill="#fa2727" visible="false" />
+            <Label fx:id="labelMessage" layoutX="202.0" layoutY="183.0" prefHeight="18.0" prefWidth="297.0" text="Oops! Ошибка входа в систему" textAlignment="CENTER" textFill="#fa2727" visible="false" />
             <Label layoutX="215.0" layoutY="105.0" text="Логин:" />
             <Label layoutX="215.0" layoutY="158.0" text="Пароль:" />
          </children>

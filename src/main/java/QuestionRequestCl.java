@@ -1,5 +1,4 @@
-import com.google.gson.JsonElement;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,8 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import com.google.gson.JsonParser;
-import com.google.gson.Gson;
+
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +37,6 @@ import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,6 +50,7 @@ import main.Models.Entities.Question;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
+import main.idea.DTO.OperationDTO;
 import main.idea.DTO.QuestionDTO;
 import main.idea.DTO.Session;
 
@@ -84,7 +82,6 @@ public class QuestionRequestCl {
 
     @FXML
     public void initialize() {
-        // Настройка отображения объектов в ListView
         clientQuestionsList.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(QuestionDTO question, boolean empty) {
@@ -92,11 +89,12 @@ public class QuestionRequestCl {
                 if (empty || question == null) {
                     setText(null);
                 } else {
-                    setText(question.getText()); // Отображаем текст вопроса
+                    setText(question.getText());
                 }
             }
         });
-        loadQuestions(); // Загружаем вопросы
+        loadQuestions();
+        loadRequest();
     }
 
     private void loadQuestions() {
@@ -114,6 +112,47 @@ public class QuestionRequestCl {
             }
         });
     }
+    private void loadRequest() {
+        // Очистка списков
+        openDepositRequestsList.getItems().clear();
+        closeDepositRequestsList.getItems().clear();
+
+        // Создание запроса
+        Request request = new Request();
+        request.setRequestType(RequestType.GETOPERATIONS);
+        request.setRequestMessage(new Gson().toJson(createClientIdJson()));
+
+        // Отправка запроса
+        sendRequestToServer(request, response -> {
+            if (response.getResponseStatus() == ResponseStatus.OK) {
+                // Разбор ответа
+                List<OperationDTO> operation = parseListResponse(response.getResponseUser(), OperationDTO.class);
+
+                // Фильтрация по типу
+                operation.stream()
+                        .filter(q -> "open".equalsIgnoreCase(q.getType()))
+                        .forEach(q -> openDepositRequestsList.getItems().add(formatQuestion(q)));
+
+                operation.stream()
+                        .filter(q -> "close".equalsIgnoreCase(q.getType()))
+                        .forEach(q -> closeDepositRequestsList.getItems().add(formatQuestion(q)));
+            } else {
+                // Обработка ошибки
+                showError("Ошибка загрузки операций", response.getResponseData());
+            }
+        });
+    }
+
+    // Метод для форматирования объекта QuestionDTO в строку
+    private String formatQuestion(OperationDTO operation) {
+        return String.format("ID: %d, Дата: %s, Тип: %s, Сумма: %.2f, Выполнено: %b",
+                operation.getIdoperation(),
+                operation.getDateSend(),
+                operation.getType(),
+                operation.getSum(),
+                operation.isDone());
+    }
+
 
     public void sendResponse(ActionEvent actionEvent) {
         // Получаем выделенный вопрос из ListView
@@ -176,7 +215,7 @@ public class QuestionRequestCl {
     }
 
     private <T> List<T> parseListResponse(String json, Class<T> clazz) {
-        Gson gson = new Gson();
+        Gson gson = createGsonWithDateAdapter();
         JsonElement jsonElement = JsonParser.parseString(json);
 
         if (jsonElement.isJsonArray()) {
@@ -191,6 +230,7 @@ public class QuestionRequestCl {
             throw new JsonSyntaxException("Неподдерживаемый формат JSON: " + json);
         }
     }
+
 
     private void sendRequestToServer(Request request, ResponseHandler handler) {
         try {
@@ -227,10 +267,18 @@ public class QuestionRequestCl {
         alert.showAndWait();
     }
 
-    public void openDepositPage(ActionEvent actionEvent) {
+    public void openDepositPage(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("Confirmations"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
     }
 
-    public void closeDepositPage(ActionEvent actionEvent) {
+    public void closeDepositPage(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("Confirmations"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
     }
 
     public void openMainPage(ActionEvent actionEvent) throws IOException {
@@ -244,5 +292,12 @@ public class QuestionRequestCl {
     @FunctionalInterface
     interface ResponseHandler {
         void handle(Response response);
+    }private Gson createGsonWithDateAdapter() {
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd") // Устанавливаем формат даты
+                .create();
     }
+
+
+
 }

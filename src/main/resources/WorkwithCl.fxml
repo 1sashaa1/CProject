@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WorkwithCl">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <children>
+        <ScrollPane fitToHeight="true" fitToWidth="true" layoutY="66.0" prefHeight="534.0" prefWidth="800.0">
+            <AnchorPane fx:id="contentPane" prefWidth="800.0" style="-fx-background-color: #ffffff;">
+                <children>
+                    <Label layoutX="294.0" layoutY="14.0" styleClass="title-label" text="Работа с клиентами в системе" />
+                    <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
+                        <graphic>
+                            <ImageView fitHeight="24.0" fitWidth="26.0">
+                                <image>
+                                    <Image url="@menu.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <TableView fx:id="clientTable" layoutX="14.0" layoutY="63.0" prefHeight="228.0" prefWidth="769.0">
+                        <columns>
+                            <TableColumn fx:id="IdColumn" prefWidth="33.40000915527344" text="ID" />
+                            <TableColumn fx:id="NameColumn" prefWidth="110.39998626708984" text="Имя" />
+                            <TableColumn fx:id="SurnameColumn" prefWidth="126.800048828125" text="Фамилия" />
+                            <TableColumn fx:id="PatronymicColumn" prefWidth="120.19998168945312" text="Отчество" />
+                            <TableColumn fx:id="DbColumn" prefWidth="101.199951171875" text="Дата рождения" />
+                            <TableColumn fx:id="CitizenshipColumn" prefWidth="88.5999755859375" text="Гражданство" />
+                            <TableColumn fx:id="TypeDocColumn" prefWidth="100.20001220703125" text="Тип документа" />
+                            <TableColumn fx:id="IdNumberColumn" minWidth="0.0" prefWidth="100.0" text="Идентификационный номер" />
+                            <TableColumn fx:id="NumberColumn" prefWidth="100.2" text="Номер документа" />
+                            <TableColumn fx:id="EmailColumn" prefWidth="100.2" text="Email" />
+                        </columns>
+                    </TableView>
+                    <HBox layoutX="244.0" layoutY="313.0" spacing="20">
+                        <Button fx:id="deleteCl" mnemonicParsing="false" onAction="#deleteCl" prefHeight="35.0" prefWidth="102.0" text="Удалить" />
+                        <Button fx:id="createCl" mnemonicParsing="false" onAction="#showCreateForm" prefHeight="35.0" prefWidth="102.0" text="Создать" />
+                        <Button fx:id="changeCl" mnemonicParsing="false" onAction="#changeCl" prefHeight="35.0" prefWidth="102.0" text="Изменить" />
+                    </HBox>
+                    <!-- Форма ввода данных -->
+                    <VBox fx:id="createForm" layoutX="20.0" layoutY="370.0" spacing="10" visible="false" managed="false" alignment="TOP_LEFT">
+                        <Label fx:id="labelMessage" text="Oops! Ошибка создания нового пользователя." textAlignment="CENTER" textFill="#fa2727" visible="false" />
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Фамилия:" />
+                            <TextField fx:id="textFieldSurname" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Имя:" />
+                            <TextField fx:id="textFieldName" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Отчество:" />
+                            <TextField fx:id="textFieldPatron" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Дата рождения:" />
+                            <DatePicker fx:id="textFieldDOB" prefHeight="26.0" prefWidth="148.0" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Гражданство:" />
+                            <ComboBox fx:id="textFieldCiti" prefWidth="150.0" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Тип документа:" />
+                            <ComboBox fx:id="textFieldTypeDoc" prefWidth="150.0" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Идентифик. номер:" />
+                            <TextField fx:id="textFieldIDNumber" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Номер документа:" />
+                            <TextField fx:id="textFieldDocN" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Логин:" />
+                            <TextField fx:id="textFieldLogin" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="E-mail:" />
+                            <TextField fx:id="textFieldEmail" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Пароль:" />
+                            <PasswordField fx:id="passwordFieldPassword" />
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Повторите пароль:" />
+                            <PasswordField fx:id="passwordFieldRepeatPassword" />
+                        </HBox>
+
+                        <Button fx:id="saveClient" text="Сохранить" onAction="#saveClient" />
+                    </VBox>
+
+                </children>
+            </AnchorPane>
+        </ScrollPane>
+
+        <Label layoutX="260.0" layoutY="10.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Система контроля вкладов" textFill="WHITE">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="buttonExit" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" onAction="#Exit_Pressed" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: #fafafa;" text="Выйти" />
+    </children>
+</AnchorPane>
+

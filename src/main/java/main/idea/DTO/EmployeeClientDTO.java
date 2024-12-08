@@ -1,16 +1,6 @@
-package main.Models.Entities;
+package main.idea.DTO;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Date;
-import java.util.Set;
-
-public class Client implements Serializable {
-    @SerializedName("id")
-    private int clientId;
-
+public class EmployeeClientDTO {
     private String email;
 
     private String name;
@@ -28,28 +18,23 @@ public class Client implements Serializable {
     private String idNumber;
 
     private String documentNumber;
-    private Set<User> Users = new HashSet<>();
 
-    private Employee employee;
+    private int IdE;
 
-    public Client() {
-    }
+    private String seat;
 
-    public Client(int clientId, String name, String surname, String patronymic, Date dob, String citizenship, String documentType, String idNumber, String documentNumber, Set<User> users) {
-        this.clientId = clientId;
+    public EmployeeClientDTO(String email, String name, String surname, String patronymic, String dob, String citizenship, String documentType, String idNumber, String documentNumber, int idE, String seat) {
+        this.email = email;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
-        this.dob = String.valueOf(dob);
+        this.dob = dob;
         this.citizenship = citizenship;
         this.documentType = documentType;
         this.idNumber = idNumber;
         this.documentNumber = documentNumber;
-        Users = users;
-    }
-
-    public int getClientId() {
-        return clientId;
+        IdE = idE;
+        this.seat = seat;
     }
 
     public String getEmail() {
@@ -58,10 +43,6 @@ public class Client implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
     }
 
     public String getName() {
@@ -128,26 +109,19 @@ public class Client implements Serializable {
         this.documentNumber = documentNumber;
     }
 
-    public Set<User> getUsers() {
-        return Users;
+    public int getIdE() {
+        return IdE;
     }
 
-    public void setUsers(Set<User> users) {
-        Users = users;
+    public void setIdE(int idE) {
+        IdE = idE;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public String getSeat() {
+        return seat;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    @Override
-    public String toString() {
-        return "Клиент" +
-                "id=" + clientId +
-                ", name='" + name + '\'';
+    public void setSeat(String seat) {
+        this.seat = seat;
     }
 }

@@ -115,7 +115,6 @@ public class Login {
                             loadPage("First_page_employee.fxml");
                             break;
                         default:
-                            // Действие по умолчанию или обработка других ролей
                             break;
                     }
                 } else {

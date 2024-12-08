@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,11 +17,20 @@ import main.Models.Entities.User;
 import main.Models.TCP.Request;
 import main.Models.TCP.Response;
 import main.Utility.ClientSocket;
+import main.builder.ClientBuilder;
+import main.builder.UserBuilder;
+import main.handlers.DefaultResponseHandler;
+import main.handlers.ErrorRegistrationHandler;
+import main.handlers.SuccessfulRegistrationHandler;
+import main.interfaces.ResponseHandler;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.Map;
 
+//Паттерн строитель и стратегия
 public class Register {
     @FXML
     private TextField textFieldLogin;
@@ -53,6 +63,11 @@ public class Register {
     @FXML
     private ComboBox<String> textFieldTypeDoc;
 
+    Map<ResponseStatus, ResponseHandler> handlers = Map.of(
+            ResponseStatus.OK, new SuccessfulRegistrationHandler(),
+            ResponseStatus.ERROR, new ErrorRegistrationHandler()
+    );
+
     public void initialize() {
 
         // Заполнение ComboBox для гражданства
@@ -78,6 +93,8 @@ public class Register {
     }
 
     public void Register_Pressed(ActionEvent actionEvent) throws IOException {
+
+
         labelMessage.setVisible(false);
 
         // Проверка на пустые поля
@@ -97,34 +114,26 @@ public class Register {
             return;
         }
 
-        // Создание пользователя
-        User user = new User();
-        user.setLogin(textFieldLogin.getText());
-        Roles userRole = Roles.CLIENT;
-        user.setRole(userRole.name());
-        user.setPassword(password);
+        //Использование паттерна строитель
+        Client client = new ClientBuilder()
+                .withEmail(textFieldEmail.getText())
+                .withName(textFieldName.getText())
+                .withSurname(textFieldSurname.getText())
+                .withPatronymic(textFieldPatron.getText())
+                .withDOB(textFieldDOB.getValue() != null ? textFieldDOB.getValue().toString() : null)
+                .withCitizenship(textFieldCiti.getValue())
+                .withDocumentType(textFieldTypeDoc.getValue())
+                .withIdNumber(textFieldIDNumber.getText())
+                .withDocumentNumber(textFieldDocN.getText())
+                .build();
 
-        // Создание клиента
-        Client client = new Client();
-        client.setEmail(textFieldEmail.getText());
-        client.setName(textFieldName.getText());
-        client.setSurname(textFieldSurname.getText());
-        client.setPatronymic(textFieldPatron.getText());
+        User user = new UserBuilder()
+                .withLogin(textFieldLogin.getText())
+                .withRole(Roles.CLIENT)
+                .withPassword(passwordFieldPassword.getText())
+                .withClient(client)
+                .build();
 
-        // Преобразование даты
-        LocalDate dob = textFieldDOB.getValue();
-        if (dob != null) {
-            client.setDob(dob.toString());  // Преобразуем дату в строку
-        }
-
-        client.setCitizenship(textFieldCiti.getValue());
-        client.setDocumentType(textFieldTypeDoc.getValue());
-        client.setIdNumber(textFieldIDNumber.getText());
-        client.setDocumentNumber(textFieldDocN.getText());
-
-        user.setClient(client);
-
-        // Создание и отправка запроса
         Request request = new Request();
         request.setRequestMessage(new Gson().toJson(user));
         request.setRequestType(RequestType.REGISTER);
@@ -138,7 +147,6 @@ public class Register {
         }
         ClientSocket.getInstance().getOut().flush();
 
-        // Получение ответа от сервера
         String answer = ClientSocket.getInstance().getInStream().readLine();
         System.out.println(answer);
         Response response = new Gson().fromJson(answer, Response.class);
@@ -149,19 +157,9 @@ public class Register {
             labelMessage.setVisible(false);
             ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseUser(), User.class));ClientSocket.getInstance().setUser(new Gson().fromJson(response.getResponseUser(), User.class));
 
+            ResponseHandler handler = handlers.getOrDefault(response.getResponseStatus(), new SuccessfulRegistrationHandler());
+            handler.handle(response);
 
-            //            // Получение пользователя из ClientSocket
-//            User currentUser = ClientSocket.getInstance().getUser();
-//
-//// Проверка, был ли установлен пользователь
-//            if (currentUser != null) {
-//                System.out.println("Установленный пользователь: " + currentUser.toString());
-//            } else {
-//                System.out.println("Пользователь не был установлен в ClientSocket.");
-//            }
-
-
-            // Переход на другой экран (укажите корректный путь)
             Stage stage = (Stage) buttonCreate.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("First_page_client.fxml"));
             Scene newScene = new Scene(root);
@@ -174,6 +172,9 @@ public class Register {
         else  {
             labelMessage.setText("Пользователь с таким логином уже существует.");
             labelMessage.setVisible(true);
+            ResponseHandler handler = handlers.getOrDefault(response.getResponseStatus(), new DefaultResponseHandler());
+            handler.handle(response);
+
         }
         } else {
 

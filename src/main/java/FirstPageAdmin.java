@@ -21,14 +21,14 @@ public class FirstPageAdmin {
 
     public void openClients(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) clButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("WorkClients.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("WorkwithCl.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
 
     public void openEmployees(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) empButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("WorkEmployees.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("WorkwithEmp.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

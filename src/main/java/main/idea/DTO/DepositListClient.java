@@ -3,6 +3,7 @@ package main.idea.DTO;
 import java.util.Date;
 
 public class DepositListClient {
+    private int idDeposit;
     private String nameDeposit;
     private String type;
     private double interestRate;
@@ -22,6 +23,18 @@ public class DepositListClient {
         this.interestRate = interestRate;
         this.type = type;
         this.nameDeposit = nameDeposit;
+    }
+
+    public int getIdDeposit() {
+        return idDeposit;
+    }
+
+    public void setIdDeposit(int idDeposit) {
+        this.idDeposit = idDeposit;
+    }
+
+    public boolean isProlongation() {
+        return prolongation;
     }
 
     public String getNameDeposit() {

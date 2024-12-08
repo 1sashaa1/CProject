@@ -124,3 +124,32 @@
     -fx-border-color: #006400;
     -fx-border-width: 2px;
 }
+
+/* Стили для всего окна */
+.dialog-pane {
+    -fx-background-color: #76a576;
+    -fx-border-color: #526852;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+
+.dialog-pane .button-bar {
+    -fx-background-color: #8fc68f;
+}
+
+/* Стили для кнопок */
+.dialog-pane .button {
+    -fx-background-color: #1e8e24;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: #314c33;
+    -fx-border-width: 2px;
+    -fx-background-radius: 5px;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: #205720;
+    -fx-border-color: #314c33;
+}
