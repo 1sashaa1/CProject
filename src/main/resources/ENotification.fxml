@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notification">
+<AnchorPane prefHeight="432.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notification">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
     <children>
 
-            <AnchorPane layoutY="60.0" prefHeight="540.0" prefWidth="800.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
+            <AnchorPane layoutY="60.0" prefHeight="351.0" prefWidth="800.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
                 <children>
-                    <Label layoutX="290.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Система уведомлений" textFill="#101010">
+                    <Label layoutX="186.0" layoutY="18.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Отправка рассылок и сообщений клиентам" textFill="#101010">
                   <font>
                      <Font size="6.0" />
                   </font></Label>
@@ -30,12 +30,21 @@
 
                         </graphic>
                     </Button>
-                    <RadioButton fx:id="radioSingleClient" layoutX="50.0" layoutY="180.0" mnemonicParsing="false" text="Отправить одному клиенту" />
-                    <RadioButton fx:id="radioAllClients" layoutX="250.0" layoutY="180.0" mnemonicParsing="false" text="Отправить всем клиентам" />
+                    <RadioButton fx:id="radioSingleClient" layoutX="50.0" layoutY="180.0" mnemonicParsing="false" text="Отправить одному клиенту">
+               <font>
+                  <Font size="14.0" />
+               </font></RadioButton>
+                    <RadioButton fx:id="radioAllClients" layoutX="273.0" layoutY="180.0" mnemonicParsing="false" text="Отправить всем клиентам">
+               <font>
+                  <Font size="14.0" />
+               </font></RadioButton>
 
                     <ComboBox fx:id="clientList" layoutX="50.0" layoutY="220.0" prefWidth="700.0" promptText="Выберите клиента" />
 
-                    <Button fx:id="sendMessageButton" layoutX="578.0" layoutY="300.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="172.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" textFill="#0b0b0b" />
+                    <Button fx:id="sendMessageButton" layoutX="314.0" layoutY="285.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="172.0" style="-fx-background-color: #fafafa;" text="Отправить сообщение" textFill="#0b0b0b">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
 
                 </children>
             </AnchorPane>

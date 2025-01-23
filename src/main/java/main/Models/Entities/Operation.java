@@ -6,6 +6,44 @@ public class Operation {
     private String type;
     private double sum;
     private boolean done;
+    private int iddata;
+    private int idclient;
+    private int idcldep;
+
+    public Operation(int idoperation) {
+        this.idoperation = idoperation;
+    }
+
+    public Operation(boolean done, double sum, String dateSend, int idoperation) {
+        this.done = done;
+        this.sum = sum;
+        this.dateSend = dateSend;
+        this.idoperation = idoperation;
+    }
+
+    public int getIddata() {
+        return iddata;
+    }
+
+    public void setIddata(int iddata) {
+        this.iddata = iddata;
+    }
+
+    public int getIdclient() {
+        return idclient;
+    }
+
+    public void setIdclient(int idclient) {
+        this.idclient = idclient;
+    }
+
+    public int getIdcldep() {
+        return idcldep;
+    }
+
+    public void setIdcldep(int idcldep) {
+        this.idcldep = idcldep;
+    }
 
     public int getIdoperation() {
         return idoperation;

@@ -101,7 +101,7 @@ public class EDeposits {
         stage.setScene(newScene);
     }
 
-    public void addDeposit(ActionEvent actionEvent) {
+    public void addDeposit(ActionEvent actionEvent) throws IOException {
         if (validateFields()) {
             Deposit deposit = new Deposit();
             deposit.setNameDeposit(nameField.getText());
@@ -123,6 +123,183 @@ public class EDeposits {
         }
     }
 
+    private void saveToDatabase(Deposit deposit) throws IOException {
+        Request request = new Request();
+        request.setRequestMessage(new Gson().toJson(deposit));
+        request.setRequestType(RequestType.ADDDEPOSIT);
+
+        PrintWriter out = ClientSocket.getInstance().getOut();
+        if (out != null) {
+            out.println(new Gson().toJson(request));
+            out.flush();
+        } else {
+            System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+        }
+        ClientSocket.getInstance().getOut().flush();
+        loadDataFromDatabase();
+    }
+
+
+    private boolean validateFields() {
+        // Проверка на заполненность полей
+        if (nameField.getText().isEmpty() || depositTypeComboBox.getValue() == null ||
+                interestRateField.getText().isEmpty() || minAmountField.getText().isEmpty() ||
+                termField.getText().isEmpty()) {
+            showAlert("Ошибка", "Все поля должны быть заполнены.");
+            return false;
+        }
+
+        // Проверка длины названия вклада
+        String depositName = nameField.getText();
+        if (depositName.length() < 2 || depositName.length() > 30) {
+            showAlert("Ошибка", "Название вклада должно быть не менее 2 и не более 30 символов.");
+            return false;
+        }
+
+        try {
+            // Проверка процентной ставки
+            double interestRate = Double.parseDouble(interestRateField.getText());
+            if (interestRate < 2 || interestRate > 20) {
+                showAlert("Ошибка", "Процентная ставка должна быть от 2% до 20%.");
+                return false;
+            }
+
+            // Проверка минимального взноса
+            double minAmount = Double.parseDouble(minAmountField.getText());
+            if (minAmount < 100 || minAmount > 30000) {
+                showAlert("Ошибка", "Границы первоначального взноса от 100 до 30,000.");
+                return false;
+            }
+
+            // Проверка срока хранения
+            int term = Integer.parseInt(termField.getText());
+            if (term < 1 || term > 36) {
+                showAlert("Ошибка", "Срок хранения должен быть от 1 до 36 месяцев.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Ошибка", "Введите корректные числовые значения для ставок, минимальной суммы и срока.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Вспомогательный метод для отображения сообщений об ошибке
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+    public void cancel(ActionEvent actionEvent) {
+        clearFields();
+    }
+
+    private void clearFields() {
+        nameField.clear();
+        interestRateField.clear();
+        minAmountField.clear();
+        termField.clear();
+        depositTypeComboBox.getSelectionModel().clearSelection();
+        isReplenishment.setSelected(false);
+        isTransactions.setSelected(false);
+        isProlongation.setSelected(false);
+    }
+
+    public void deleteD(ActionEvent actionEvent) throws IOException {
+        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
+
+        if (selectedDeposit != null) {
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Подтверждение");
+            confirmationAlert.setHeaderText("Подтвердите действие удаления депозита");
+            confirmationAlert.setContentText("Вы уверены, что хотите удалить выбранный депозит?");
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                Request request = new Request();
+                request.setRequestType(RequestType.DELETEDEPOSIT);
+                request.setRequestMessage(new Gson().toJson(selectedDeposit.getId()));
+
+                PrintWriter out = ClientSocket.getInstance().getOut();
+                if (out != null) {
+                    out.println(new Gson().toJson(request));
+                    out.flush();
+                } else {
+                    System.err.println("Ошибка: соединение не установлено.");
+                }
+                loadDataFromDatabase();
+                depositsList.remove(selectedDeposit);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText("Пожалуйста, выберите депозит для удаления.");
+            alert.showAndWait();
+        }
+    }
+
+    public void changeD(ActionEvent actionEvent) throws IOException {
+        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
+
+        if (selectedDeposit != null) {
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Подтверждение");
+            confirmationAlert.setHeaderText("Подтвердите действие изменения депозита");
+            confirmationAlert.setContentText("Вы уверены, что хотите изменить выбранный депозит?");
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+
+                selectedDeposit.setNameDeposit(nameField.getText());
+                selectedDeposit.setType((String) depositTypeComboBox.getValue());
+                selectedDeposit.setInterestRate(Double.parseDouble(interestRateField.getText()));
+                selectedDeposit.setMinAmount(Double.parseDouble(minAmountField.getText()));
+                selectedDeposit.setTerm(Integer.parseInt(termField.getText()));
+                selectedDeposit.setReplenishment(isReplenishment.isSelected());
+                selectedDeposit.setTransactions(isTransactions.isSelected());
+                selectedDeposit.setProlongation(isProlongation.isSelected());
+
+                Request request = new Request();
+                request.setRequestType(RequestType.UPDATEDEPOSIT);
+                request.setRequestMessage(new Gson().toJson(selectedDeposit));
+
+                PrintWriter out = ClientSocket.getInstance().getOut();
+                if (out != null) {
+                    out.println(new Gson().toJson(request));
+                    out.flush();
+                } else {
+                    System.err.println("Ошибка: соединение не установлено.");
+                }
+                loadDataFromDatabase();
+                depositTable.refresh();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка");
+            alert.setHeaderText(null);
+            alert.setContentText("Пожалуйста, выберите депозит для изменения.");
+
+            alert.showAndWait();
+        }
+    }
+    public void openMainPage(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) buttonExit.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("First_page_employee.fxml"));
+        Scene newScene = new Scene(root);
+        stage.setScene(newScene);
+    }
+
+    public void openDeposit(ActionEvent actionEvent) {
+    }
+
+    public void closeDeposit(ActionEvent actionEvent) {
+    }
     private void loadDataFromDatabase() throws IOException {
         Request request = new Request();
         request.setRequestType(RequestType.GETDEPOSITS);
@@ -170,150 +347,5 @@ public class EDeposits {
             }
         }).start();
 
-    }
-
-    private void saveToDatabase(Deposit deposit) {
-        Request request = new Request();
-        request.setRequestMessage(new Gson().toJson(deposit));
-        request.setRequestType(RequestType.ADDDEPOSIT);
-
-        PrintWriter out = ClientSocket.getInstance().getOut();
-        if (out != null) {
-            out.println(new Gson().toJson(request));
-            out.flush();
-        } else {
-            System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
-        }
-        ClientSocket.getInstance().getOut().flush();
-    }
-
-    private boolean validateFields() {
-        if (nameField.getText().isEmpty() || depositTypeComboBox.getValue() == null ||
-                interestRateField.getText().isEmpty() || minAmountField.getText().isEmpty() ||
-                termField.getText().isEmpty()) {
-            return false;
-        }
-
-        try {
-            Double.parseDouble(interestRateField.getText());
-            Double.parseDouble(minAmountField.getText());
-            Integer.parseInt(termField.getText());
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка: Введите корректные числовые значения для ставок и минимальной суммы.");
-            return false;
-        }
-
-        return true;
-    }
-
-    public void cancel(ActionEvent actionEvent) {
-        clearFields();
-    }
-
-    private void clearFields() {
-        nameField.clear();
-        interestRateField.clear();
-        minAmountField.clear();
-        termField.clear();
-        depositTypeComboBox.getSelectionModel().clearSelection();
-        isReplenishment.setSelected(false);
-        isTransactions.setSelected(false);
-        isProlongation.setSelected(false);
-    }
-
-    public void deleteD(ActionEvent actionEvent) {
-        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
-
-        if (selectedDeposit != null) {
-            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle("Подтверждение");
-            confirmationAlert.setHeaderText("Подтвердите действие удаления депозита");
-            confirmationAlert.setContentText("Вы уверены, что хотите удалить выбранный депозит?");
-
-            Optional<ButtonType> result = confirmationAlert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                Request request = new Request();
-                request.setRequestType(RequestType.DELETEDEPOSIT);
-                request.setRequestMessage(new Gson().toJson(selectedDeposit.getId()));
-
-                PrintWriter out = ClientSocket.getInstance().getOut();
-                if (out != null) {
-                    out.println(new Gson().toJson(request));
-                    out.flush();
-                } else {
-                    System.err.println("Ошибка: соединение не установлено.");
-                }
-
-                depositsList.remove(selectedDeposit);
-                initialize();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText(null);
-            alert.setContentText("Пожалуйста, выберите депозит для удаления.");
-
-            alert.showAndWait();
-        }
-
-    }
-
-
-    public void changeD(ActionEvent actionEvent) {
-        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
-
-        if (selectedDeposit != null) {
-            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle("Подтверждение");
-            confirmationAlert.setHeaderText("Подтвердите действие изменения депозита");
-            confirmationAlert.setContentText("Вы уверены, что хотите изменить выбранный депозит?");
-
-            Optional<ButtonType> result = confirmationAlert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-
-                selectedDeposit.setNameDeposit(nameField.getText());
-                selectedDeposit.setType((String) depositTypeComboBox.getValue());
-                selectedDeposit.setInterestRate(Double.parseDouble(interestRateField.getText()));
-                selectedDeposit.setMinAmount(Double.parseDouble(minAmountField.getText()));
-                selectedDeposit.setTerm(Integer.parseInt(termField.getText()));
-                selectedDeposit.setReplenishment(isReplenishment.isSelected());
-                selectedDeposit.setTransactions(isTransactions.isSelected());
-                selectedDeposit.setProlongation(isProlongation.isSelected());
-
-                Request request = new Request();
-                request.setRequestType(RequestType.UPDATEDEPOSIT);
-                request.setRequestMessage(new Gson().toJson(selectedDeposit));
-
-                PrintWriter out = ClientSocket.getInstance().getOut();
-                if (out != null) {
-                    out.println(new Gson().toJson(request));
-                    out.flush();
-                } else {
-                    System.err.println("Ошибка: соединение не установлено.");
-                }
-
-                depositTable.refresh();
-                initialize();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText(null);
-            alert.setContentText("Пожалуйста, выберите депозит для изменения.");
-
-            alert.showAndWait();
-        }
-    }
-    public void openMainPage(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) buttonExit.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("First_page_employee.fxml"));
-        Scene newScene = new Scene(root);
-        stage.setScene(newScene);
-    }
-
-    public void openDeposit(ActionEvent actionEvent) {
-    }
-
-    public void closeDeposit(ActionEvent actionEvent) {
     }
 }

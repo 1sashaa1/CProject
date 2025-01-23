@@ -3,10 +3,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import main.Enums.RequestType;
@@ -46,8 +43,8 @@ public class Login {
     public void Login_Pressed(ActionEvent actionEvent) throws IOException {
         labelMessage.setVisible(false);
 
-        // Проверка на пустые поля
         if (textFieldLogin.getText().isEmpty() || passwordFieldPassword.getText().isEmpty()) {
+            showAlert("Ошибка входа","Не все поля заполнены");
             labelMessage.setText("Не все поля заполнены");
             labelMessage.setVisible(true);
             return;
@@ -118,14 +115,17 @@ public class Login {
                             break;
                     }
                 } else {
-                    labelMessage.setText("Роль пользователя не определена.");
+                    showAlert("Ошибка входа","Пользователь не определён.");
+                    labelMessage.setText("Пользователь не определён.");
                     labelMessage.setVisible(true);
                 }
             } else {
+                showAlert("Ошибка входа","Пользователя с такими данными не существует.");
                 labelMessage.setText("Ошибка при входе.");
                 labelMessage.setVisible(true);
             }
         } else {
+            showAlert("Ошибка входа","Пользователя с такими данными не существует.");
             labelMessage.setText("Пользователь с таким логином не существует.");
             labelMessage.setVisible(true);
         }
@@ -137,5 +137,12 @@ public class Login {
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
         stage.show();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -153,3 +153,6 @@
     -fx-background-color: #205720;
     -fx-border-color: #314c33;
 }
+#answersLabel,  #answersLabel2, #answersLabel3{
+    -fx-text-fill: #101010; /* Чёрный цвет */
+}

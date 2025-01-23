@@ -13,7 +13,7 @@
    <children>
       <AnchorPane layoutY="60.0" prefHeight="426.0" prefWidth="720.0" style="-fx-background-color: #fafafa;" styleClass="content-pane">
          <children>
-            <Label layoutX="220.0" layoutY="14.0" styleClass="title-label" text="Интерфейс клиента банка" />
+            <Label layoutX="245.0" layoutY="14.0" styleClass="title-label" text="Интерфейс клиента банка" />
 
             <Pane layoutX="44.0" layoutY="60.0" prefHeight="120.0" prefWidth="262.0" styleClass="frame">
                <Label layoutX="10.0" layoutY="14.0" styleClass="frame-title" text="Вклады" />
@@ -55,7 +55,7 @@
                      </ImageView></graphic>
                </Button>
             </Pane>
-            <Pane layoutX="43.0" layoutY="229.0" prefHeight="120.0" prefWidth="262.0" styleClass="frame" >
+            <Pane layoutX="43.0" layoutY="229.0" prefHeight="120.0" prefWidth="262.0" styleClass="frame">
                <Label layoutX="10.0" layoutY="10.0" styleClass="frame-title" text="Доступные рассылки" />
                <Label layoutX="10.0" layoutY="40.0" styleClass="frame-description" text="Рассылки о обновлениях системы." />
                <Button fx:id="notifButton" layoutX="50.0" layoutY="67.0" onAction="#openNotifications" prefHeight="39.0" prefWidth="156.0" styleClass="icon-button" text="Рассылки">

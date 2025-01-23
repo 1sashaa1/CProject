@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="486.0" prefWidth="800.0" style="-fx-background-color: #006400;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CNotification">
     <stylesheets>
@@ -29,9 +30,15 @@
         <VBox layoutX="50.0" layoutY="60.0" prefWidth="700.0" spacing="15.0">
 
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="filter-pane">
-                <Label text="Поиск по статусу:" textFill="#ffffff" />
+                <Label text="Поиск по статусу:" textFill="#ffffff">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Выберите статус" />
-                <Label text="Поиск по теме:" textFill="#ffffff" />
+                <Label text="Поиск по теме:" textFill="#ffffff">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
                 <TextField fx:id="subjectFilter" promptText="Введите тему рассылки" />
                 <Button onAction="#searchNotifications" style="-fx-background-color: #ffffff;" text="Поиск" />
             </HBox>
@@ -47,7 +54,10 @@
                 </TableView>
             </ScrollPane>
         </VBox>
-        <Button fx:id="markAsReadButton" layoutX="316.0" layoutY="446.0" onAction="#markSelectedAsRead" text="Пометить как прочитанное" />
+        <Button fx:id="markAsReadButton" layoutX="302.0" layoutY="442.0" onAction="#markSelectedAsRead" text="Пометить как прочитанное">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
 
     </children>
 </AnchorPane>

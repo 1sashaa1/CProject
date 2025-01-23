@@ -15,6 +15,9 @@ public class OperationDTO {
     private double sum;
 
     private boolean done;
+    private int iddata;
+    private int idclient;
+    private int idcldep;
 
     public OperationDTO() {
     }
@@ -24,6 +27,10 @@ public class OperationDTO {
         this.dateSend = Date.valueOf(operation.getDateSend());
         this.sum = operation.getSum();
         this.type = operation.getType();
+        this.done = operation.isDone();
+        this.idclient = operation.getIdclient();
+        this.idcldep = operation.getIdcldep();
+        this.iddata = operation.getIddata();
     }
 
     public int getIdoperation() {

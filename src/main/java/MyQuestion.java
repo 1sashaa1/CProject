@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.Enums.RequestType;
 import main.Enums.ResponseStatus;
@@ -26,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MyQuestion {
@@ -33,9 +31,21 @@ public class MyQuestion {
     public Button sendQuestionButton;
     public ListView questionsAndAnswersList;
     public Button buttonExit;
+    public ComboBox<String> basicQuestionsComboBox;
+    public Button askBotButton;
 
     @FXML
     public void initialize() throws IOException {
+        List<String> basicQuestions = Arrays.asList(
+                "Как я могу открыть вклад?",
+                "Какие документы мне нужны для оформления вклада?",
+                "Как узнать процентную ставку по вкладу?",
+                "Что делать, если я хочу закрыть вклад раньше срока?",
+                "Какие виды вкладов предлагает банк?"
+        );
+
+        basicQuestionsComboBox.getItems().addAll(basicQuestions);
+
         loadQuestions();
     }
 
@@ -133,5 +143,43 @@ public class MyQuestion {
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
+    public void askBot(ActionEvent actionEvent) {
+        String selectedQuestion = basicQuestionsComboBox.getValue();
+        if (selectedQuestion == null || selectedQuestion.isEmpty()) {
+            System.out.println("Выберите вопрос из списка.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Вы не выбрали вопрос из списка!");
+            alert.setHeaderText(null);
+            alert.setContentText("Выберите вопрос из выпадающего списка.");
+            alert.showAndWait();
+            return;
+        }
+
+        String answer = getAnswerForQuestion(selectedQuestion);
+        if (answer != null) {
+            questionsAndAnswersList.getItems().add("Вопрос: " + selectedQuestion + "\nОтвет: " + answer);
+        } else {
+            questionsAndAnswersList.getItems().add("Вопрос: " + selectedQuestion + "\nОтвет: Извините, ответа на этот вопрос пока нет.");
+        }
+    }
+
+    private String getAnswerForQuestion(String question) {
+        switch (question) {
+            case "Как я могу открыть вклад?":
+                return "Вы можете открыть вклад, посетив ближайшее отделение банка или через наш интернет-банкинг.";
+            case "Какие документы мне нужны для оформления вклада?":
+                return "Для открытия вклада потребуется паспорт и ИНН.";
+            case "Как узнать процентную ставку по вкладу?":
+                return "Процентную ставку можно узнать на сайте банка или обратившись к специалисту в отделении.";
+            case "Что делать, если я хочу закрыть вклад раньше срока?":
+                return "В случае досрочного закрытия вклада, обратитесь в банк. Учтите, что может быть пересчитан доход.";
+            case "Какие виды вкладов предлагает банк?":
+                return "Наш банк предлагает срочные, накопительные и пенсионные вклады.";
+            default:
+                return null;
+        }
+    }
+
+
 }
 

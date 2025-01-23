@@ -26,6 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 public class Notification {
     @FXML
     private ComboBox<Client> clientList;
@@ -40,15 +43,14 @@ public class Notification {
     @FXML
     private Button buttonExit;
 
-    private List<Client> clients = new ArrayList<>(); // Используем List для хранения клиентов
+    private List<Client> clients = new ArrayList<>();
 
     @FXML
     public void initialize() {
         ToggleGroup clientGroup = new ToggleGroup();
         radioSingleClient.setToggleGroup(clientGroup);
         radioAllClients.setToggleGroup(clientGroup);
-
-        loadClients();  // Инициализация загрузки клиентов
+        loadClients();
     }
 
     private void loadClients() {
@@ -60,7 +62,7 @@ public class Notification {
             out.println(new Gson().toJson(request));
             out.flush();
         } else {
-            System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+            System.err.println("Ошибка: PrintWriter равен null. Убедитесь, что соединение установлено.");
             return;
         }
 
@@ -71,23 +73,17 @@ public class Notification {
                     Response response = new Gson().fromJson(answer, Response.class);
                     if (response.getResponseStatus() == ResponseStatus.OK) {
                         String jsonResponse = response.getResponseUser();
-                        System.out.println("JSON ответ: " + jsonResponse);
-
-                        // Преобразуем JSON в список клиентов
                         clients = new ArrayList<>(Arrays.asList(new Gson().fromJson(jsonResponse, Client[].class)));
-                        System.out.println("Клиенты: " + clients);
-
-                        // Обновление интерфейса в главном потоке
                         Platform.runLater(() -> {
                             if (clientList != null) {
-                                clientList.getItems().clear(); // Очищаем старые элементы
-                                clientList.getItems().addAll(clients); // Добавляем новые элементы
+                                clientList.getItems().clear();
+                                clientList.getItems().addAll(clients);
                             } else {
                                 System.err.println("Ошибка: clientList не инициализирован.");
                             }
                         });
                     } else {
-                        System.out.println("Ошибка: Не удалось загрузить данные из базы данных");
+                        System.out.println("Ошибка: Не удалось загрузить данные из базы.");
                     }
                 }
             } catch (IOException e) {
@@ -111,36 +107,39 @@ public class Notification {
             out.println(new Gson().toJson(request));
             out.flush();
         } else {
-            System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
+            System.err.println("Ошибка: PrintWriter равен null.");
         }
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Успешно!");
+        alert.setHeaderText(null);
+        alert.setContentText("Сообщение отправлено клиенту");
+        alert.showAndWait();
     }
 
     public void broadcastNotification(String message) {
         for (Client client : clients) {
-            // Отправляем сообщение каждому клиенту
-            System.out.println("Отправка уведомления для клиента: " + client);
             sendNotificationToClient(client.getClientId(), message);
         }
     }
 
     public void sendMessage(ActionEvent actionEvent) {
         String message = messageText.getText().trim();
-        if (message.isEmpty()) {
-            System.out.println("Сообщение не может быть пустым");
+        if (message.isEmpty() || message.length() < 10) {
+            showAlert("Ошибка", "Сообщение должно содержать не менее 10 символов.");
             return;
         }
 
         if (radioAllClients.isSelected()) {
-            broadcastNotification(message); // Отправляем сообщение всем клиентам
-        } else if (radioSingleClient.isSelected() && clientList.getValue() != null) {
-            Client selectedClient = clientList.getValue();
-            System.out.println("Выбранный клиент: " + selectedClient);
-
-            if (selectedClient != null) {
-                sendNotificationToClient(selectedClient.getClientId(), message);
+            broadcastNotification(message);
+        } else if (radioSingleClient.isSelected()) {
+            if (clientList.getValue() == null) {
+                showAlert("Ошибка", "Пожалуйста, выберите клиента из списка.");
+                return;
             }
+            Client selectedClient = clientList.getValue();
+            sendNotificationToClient(selectedClient.getClientId(), message);
         } else {
-            System.out.println("Пожалуйста, выберите получателя или укажите, что сообщение должно быть отправлено всем.");
+            showAlert("Ошибка", "Пожалуйста, выберите получателя: одному клиенту или всем.");
         }
     }
 
@@ -150,10 +149,19 @@ public class Notification {
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
+
     public void openMainPage(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("First_page_employee.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

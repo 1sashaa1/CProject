@@ -63,6 +63,126 @@ public class Register {
     @FXML
     private ComboBox<String> textFieldTypeDoc;
 
+    public TextField getTextFieldLogin() {
+        return textFieldLogin;
+    }
+
+    public void setTextFieldLogin(TextField textFieldLogin) {
+        this.textFieldLogin = textFieldLogin;
+    }
+
+    public TextField getTextFieldEmail() {
+        return textFieldEmail;
+    }
+
+    public void setTextFieldEmail(TextField textFieldEmail) {
+        this.textFieldEmail = textFieldEmail;
+    }
+
+    public Button getButtonCreate() {
+        return buttonCreate;
+    }
+
+    public void setButtonCreate(Button buttonCreate) {
+        this.buttonCreate = buttonCreate;
+    }
+
+    public Label getLabelMessage() {
+        return labelMessage;
+    }
+
+    public void setLabelMessage(Label labelMessage) {
+        this.labelMessage = labelMessage;
+    }
+
+    public PasswordField getPasswordFieldPassword() {
+        return passwordFieldPassword;
+    }
+
+    public void setPasswordFieldPassword(PasswordField passwordFieldPassword) {
+        this.passwordFieldPassword = passwordFieldPassword;
+    }
+
+    public PasswordField getPasswordFieldRepeatPassword() {
+        return passwordFieldRepeatPassword;
+    }
+
+    public void setPasswordFieldRepeatPassword(PasswordField passwordFieldRepeatPassword) {
+        this.passwordFieldRepeatPassword = passwordFieldRepeatPassword;
+    }
+
+    public Button getButtonLogin() {
+        return buttonLogin;
+    }
+
+    public void setButtonLogin(Button buttonLogin) {
+        this.buttonLogin = buttonLogin;
+    }
+
+    public TextField getTextFieldSurname() {
+        return textFieldSurname;
+    }
+
+    public void setTextFieldSurname(TextField textFieldSurname) {
+        this.textFieldSurname = textFieldSurname;
+    }
+
+    public TextField getTextFieldName() {
+        return textFieldName;
+    }
+
+    public void setTextFieldName(TextField textFieldName) {
+        this.textFieldName = textFieldName;
+    }
+
+    public TextField getTextFieldPatron() {
+        return textFieldPatron;
+    }
+
+    public void setTextFieldPatron(TextField textFieldPatron) {
+        this.textFieldPatron = textFieldPatron;
+    }
+
+    public TextField getTextFieldIDNumber() {
+        return textFieldIDNumber;
+    }
+
+    public void setTextFieldIDNumber(TextField textFieldIDNumber) {
+        this.textFieldIDNumber = textFieldIDNumber;
+    }
+
+    public TextField getTextFieldDocN() {
+        return textFieldDocN;
+    }
+
+    public void setTextFieldDocN(TextField textFieldDocN) {
+        this.textFieldDocN = textFieldDocN;
+    }
+
+    public DatePicker getTextFieldDOB() {
+        return textFieldDOB;
+    }
+
+    public void setTextFieldDOB(DatePicker textFieldDOB) {
+        this.textFieldDOB = textFieldDOB;
+    }
+
+    public ComboBox<String> getTextFieldCiti() {
+        return textFieldCiti;
+    }
+
+    public void setTextFieldCiti(ComboBox<String> textFieldCiti) {
+        this.textFieldCiti = textFieldCiti;
+    }
+
+    public ComboBox<String> getTextFieldTypeDoc() {
+        return textFieldTypeDoc;
+    }
+
+    public void setTextFieldTypeDoc(ComboBox<String> textFieldTypeDoc) {
+        this.textFieldTypeDoc = textFieldTypeDoc;
+    }
+
     Map<ResponseStatus, ResponseHandler> handlers = Map.of(
             ResponseStatus.OK, new SuccessfulRegistrationHandler(),
             ResponseStatus.ERROR, new ErrorRegistrationHandler()
@@ -94,14 +214,9 @@ public class Register {
 
     public void Register_Pressed(ActionEvent actionEvent) throws IOException {
 
-
         labelMessage.setVisible(false);
 
-        // Проверка на пустые поля
-        if (textFieldLogin.getText().isEmpty() || textFieldEmail.getText().isEmpty() ||
-                passwordFieldPassword.getText().isEmpty() || passwordFieldRepeatPassword.getText().isEmpty()) {
-            labelMessage.setText("Не все поля заполнены");
-            labelMessage.setVisible(true);
+        if (!validateClientFields()) {
             return;
         }
 
@@ -187,6 +302,60 @@ public class Register {
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
+    }
+
+    public boolean validateClientFields() {
+
+        if (textFieldLogin.getText().isEmpty() || textFieldEmail.getText().isEmpty() ||
+                passwordFieldPassword.getText().isEmpty() || passwordFieldRepeatPassword.getText().isEmpty() ||
+                textFieldName.getText().isEmpty() || textFieldSurname.getText().isEmpty() ||
+                textFieldDOB.getValue() == null || textFieldCiti.getValue() == null ||
+                textFieldTypeDoc.getValue() == null || textFieldIDNumber.getText().isEmpty() ||
+                textFieldDocN.getText().isEmpty()) {
+            labelMessage.setText("Заполните все поля.");
+            labelMessage.setVisible(true);
+            return false;
+        }
+
+        // Проверка email
+        if (!textFieldEmail.getText().matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+            labelMessage.setText("Введите корректный email.");
+            labelMessage.setVisible(true);
+            return false;
+        }
+
+        // Проверка логина и пароля
+        String login = textFieldLogin.getText();
+        String password = passwordFieldPassword.getText();
+        if (login.length() < 4 || login.length() > 20 || password.length() < 4 || password.length() > 20) {
+            labelMessage.setText("Логин и пароль должны быть от 4 до 20 символов.");
+            labelMessage.setVisible(true);
+            return false;
+        }
+
+        if (!textFieldName.getText().matches("^[A-Za-zА-Яа-яЁё]{1,24}$") ||
+                !textFieldSurname.getText().matches("^[A-Za-zА-Яа-яЁё]{1,24}$") ||
+                !textFieldPatron.getText().matches("^[A-Za-zА-Яа-яЁё]{1,24}$")) {
+            labelMessage.setText("Имя, фамилия и отчество должны быть от 1 до 24 символов и без пробелов/цифр.");
+            labelMessage.setVisible(true);
+            return false;
+        }
+
+        LocalDate dob = textFieldDOB.getValue();
+        LocalDate today = LocalDate.now();
+        if (dob.isAfter(today.minusYears(18)) || dob.isBefore(today.minusYears(150))) {
+            labelMessage.setText("Дата рождения должна быть между -150 и -18 годами от текущей даты.");
+            labelMessage.setVisible(true);
+            return false;
+        }
+
+        if (textFieldIDNumber.getText().length() != 9 || textFieldDocN.getText().length() != 9) {
+            labelMessage.setText("Идентификационный номер и номер документа должны содержать ровно 9 символов.");
+            labelMessage.setVisible(true);
+            return false;
+        }
+
+        return true;
     }
 }
 

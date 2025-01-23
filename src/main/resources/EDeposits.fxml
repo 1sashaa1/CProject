@@ -14,9 +14,9 @@
     </stylesheets>
     <children>
         <ScrollPane layoutY="66.0" prefHeight="700.0" prefWidth="800.0">
-            <AnchorPane layoutY="60.0" prefHeight="540.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" styleClass="content-pane">
+            <AnchorPane layoutY="60.0" prefHeight="588.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" styleClass="content-pane">
                 <children>
-                    <Label layoutX="269.0" layoutY="12.0" styleClass="title-label" text="Интерфейс сотрудника банка" />
+                    <Label layoutX="281.0" layoutY="15.0" styleClass="title-label" text="Интерфейс сотрудника банка" />
                     <Button fx:id="backButton" layoutX="24.0" layoutY="14.0" onAction="#openMainPage" prefHeight="15.0" prefWidth="50.0" styleClass="icon-button">
                         <graphic>
                             <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="14.0">
@@ -28,7 +28,7 @@
                         </graphic>
                     </Button>
 
-                    <TableView fx:id="depositTable" layoutX="21.0" layoutY="56.0" prefHeight="200.0" prefWidth="758.0">
+                    <TableView fx:id="depositTable" layoutX="21.0" layoutY="66.0" prefHeight="200.0" prefWidth="758.0">
                         <columns>
                             <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
                             <TableColumn fx:id="NameColumn" prefWidth="165.59999084472656" text="Название вклада" />
@@ -56,8 +56,11 @@
 
                         <HBox spacing="10" />
                     </VBox>
-                    <Label layoutX="27.0" layoutY="333.0" text="Тип вклада:" />
-                    <ComboBox fx:id="depositTypeComboBox" layoutX="105.0" layoutY="329.0" prefHeight="26.0" prefWidth="159.0" promptText="Выберите тип вклада">
+                    <Label layoutX="29.0" layoutY="363.0" text="Тип вклада:">
+                  <font>
+                     <Font size="14.0" />
+                  </font></Label>
+                    <ComboBox fx:id="depositTypeComboBox" layoutX="115.0" layoutY="360.0" prefHeight="26.0" prefWidth="159.0" promptText="Выберите тип вклада">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
                                 <String fx:value="Срочный" />
@@ -66,22 +69,51 @@
                             </FXCollections>
                         </items>
                     </ComboBox>
-                    <Label layoutX="25.0" layoutY="297.0" text="Название вклада:" />
-                    <TextField fx:id="nameField" layoutX="145.0" layoutY="292.0" prefHeight="26.0" prefWidth="180.0" promptText="Введите название вклада" />
-                    <Label layoutX="25.0" layoutY="366.0" text="Годовая процентная ставка (%):" />
-                    <TextField fx:id="interestRateField" layoutX="244.0" layoutY="362.0" prefHeight="26.0" prefWidth="180.0" promptText="Введите процентную ставку" />
-                    <Label layoutX="28.0" layoutY="399.0" text="Минимальный первоначальный взнос:" />
-                    <TextField fx:id="minAmountField" layoutX="262.0" layoutY="395.0" prefHeight="26.0" prefWidth="180.0" promptText="Введите минимальную сумму" />
-                    <Label layoutX="28.0" layoutY="433.0" text="Срок хранения (месяцы):" />
-                    <TextField fx:id="termField" layoutX="185.0" layoutY="429.0" prefHeight="26.0" prefWidth="159.0" promptText="Введите срок вклада" />
-                    <CheckBox fx:id="isReplenishment" layoutX="27.0" layoutY="465.0" text="Пополнение" />
-                    <CheckBox fx:id="isTransactions" layoutX="185.0" layoutY="465.0" text="Расходные операции" />
-                    <CheckBox fx:id="isProlongation" layoutX="352.0" layoutY="465.0" text="Пролонгация" />
-                    <Button fx:id="buttonAdd" layoutX="28.0" layoutY="501.0" onAction="#addDeposit" text="Добавить вклад" />
-                    <Button fx:id="buttonCancel" layoutX="156.0" layoutY="501.0" onAction="#cancel" text="Отмена" />
-                    <Label layoutX="25.0" layoutY="259.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Добавить вклад" />
-               <Button fx:id="deleteDeposit" layoutX="718.0" layoutY="270.0" mnemonicParsing="false" onAction="#deleteD" text="Удалить" />
-               <Button fx:id="changeDeposit" layoutX="633.0" layoutY="270.0" mnemonicParsing="false" onAction="#changeD" text="Изменить" />
+                    <Label layoutX="28.0" layoutY="326.0" text="Название вклада:">
+                  <font>
+                     <Font size="14.0" />
+                  </font></Label>
+                    <TextField fx:id="nameField" layoutX="157.0" layoutY="323.0" prefHeight="26.0" prefWidth="180.0" promptText="Введите название вклада" />
+                    <Label layoutX="28.0" layoutY="396.0" text="Годовая процентная ставка (%):">
+                  <font>
+                     <Font size="14.0" />
+                  </font></Label>
+                    <TextField fx:id="interestRateField" layoutX="258.0" layoutY="393.0" prefHeight="26.0" prefWidth="180.0" promptText="Введите процентную ставку" />
+                    <Label layoutX="26.0" layoutY="428.0" prefHeight="20.0" prefWidth="257.0" text="Минимальный первоначальный взнос:">
+                  <font>
+                     <Font size="14.0" />
+                  </font></Label>
+                    <TextField fx:id="minAmountField" layoutX="300.0" layoutY="425.0" prefHeight="26.0" prefWidth="180.0" promptText="Введите минимальную сумму" />
+                    <Label layoutX="28.0" layoutY="463.0" text="Срок хранения (месяцы):">
+                  <font>
+                     <Font size="14.0" />
+                  </font></Label>
+                    <TextField fx:id="termField" layoutX="203.0" layoutY="460.0" prefHeight="26.0" prefWidth="159.0" promptText="Введите срок вклада" />
+                    <CheckBox fx:id="isReplenishment" layoutX="28.0" layoutY="495.0" text="Пополнение">
+                  <font>
+                     <Font size="14.0" />
+                  </font></CheckBox>
+                    <CheckBox fx:id="isTransactions" layoutX="187.0" layoutY="495.0" text="Расходные операции">
+                  <font>
+                     <Font size="14.0" />
+                  </font></CheckBox>
+                    <CheckBox fx:id="isProlongation" layoutX="379.0" layoutY="495.0" text="Пролонгация">
+                  <font>
+                     <Font size="14.0" />
+                  </font></CheckBox>
+                    <Button fx:id="buttonAdd" layoutX="26.0" layoutY="530.0" onAction="#addDeposit" prefHeight="35.0" prefWidth="110.0" text="Добавить вклад" />
+                    <Button fx:id="buttonCancel" layoutX="154.0" layoutY="539.0" onAction="#cancel" text="Отмена" />
+                    <Label layoutX="30.0" layoutY="280.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Добавление нового вклада:">
+                  <font>
+                     <Font name="System Italic" size="12.0" />
+                  </font></Label>
+               <Button fx:id="deleteDeposit" layoutX="709.0" layoutY="279.0" mnemonicParsing="false" onAction="#deleteD" text="Удалить" />
+               <Button fx:id="changeDeposit" layoutX="611.0" layoutY="279.0" mnemonicParsing="false" onAction="#changeD" text="Изменить" />
+               <Label layoutX="305.0" layoutY="42.0" text="Список вкладов в системе">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
 
                 </children>
             </AnchorPane>

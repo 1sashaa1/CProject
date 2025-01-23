@@ -269,14 +269,14 @@ public class QuestionRequestCl {
 
     public void openDepositPage(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("Confirmations"));
+        Parent root = FXMLLoader.load(getClass().getResource("Confirmations.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }
 
     public void closeDepositPage(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) buttonExit.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("Confirmations"));
+        Parent root = FXMLLoader.load(getClass().getResource("Confirmations.fxml"));
         Scene newScene = new Scene(root);
         stage.setScene(newScene);
     }

@@ -4,10 +4,13 @@ import java.util.Date;
 
 public class RequestClientsDepositsDTO {
     private int idDeposit;
+
     private String nameDeposit;
     private boolean isOpen;
     private double firstAmount;
     private Date openingDate;
+
+    private int idClient;
     private String name;
     private String surname;
     private String patronymic;
@@ -21,6 +24,18 @@ public class RequestClientsDepositsDTO {
         this.isOpen = isOpen;
         this.firstAmount = firstAmount;
         this.openingDate = openingDate;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public int getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
     public int getIdDeposit() {

@@ -26,6 +26,7 @@ import main.idea.DTO.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class CList {
     public TableColumn dateOpenColumn;
@@ -179,15 +180,28 @@ public class CList {
     }
 
     public void prolongD(ActionEvent actionEvent) {
-        Deposit selectedDeposit = (Deposit) depositTable.getSelectionModel().getSelectedItem();
+        DepositListClient selectedDeposit = (DepositListClient) depositTable.getSelectionModel().getSelectedItem();
+
         if (selectedDeposit != null) {
+            TextInputDialog inputDialog = new TextInputDialog("10000");
+            inputDialog.setTitle("Введите сумму");
+            inputDialog.setHeaderText("Введите сумму для пополнения депозита:");
+            inputDialog.setContentText("Сумма:");
+
+            Optional<String> result = inputDialog.showAndWait();
+            double initialAmount;
             try {
                 int clientId = Session.getClientId();
+                initialAmount = Double.parseDouble(result.get());
+                if (initialAmount < 0) {
+                    throw new NumberFormatException();
+                }
                 Request request = new Request();
                 request.setRequestType(RequestType.PROLONGDEPOSIT);
                 JsonObject requestMessage = new JsonObject();
                 requestMessage.addProperty("clientId", clientId);
-                requestMessage.addProperty("depositId", selectedDeposit.getId());
+                requestMessage.addProperty("depositId", selectedDeposit.getIdDeposit());
+                requestMessage.addProperty("initialAmount", initialAmount);
 
                 request.setRequestMessage(new Gson().toJson(requestMessage));
 
@@ -200,7 +214,7 @@ public class CList {
                     System.err.println("Ошибка: PrintWriter равен null. Пожалуйста, убедитесь, что соединение установлено и ClientSocket правильно инициализирован.");
                 }
 
-                System.out.println("Отправлен запрос на продление депозита: " + selectedDeposit.getId());
+                System.out.println("Отправлен запрос на продление депозита: " + selectedDeposit.getIdDeposit());
 
                 new Thread(() -> {
                     try {
@@ -234,7 +248,6 @@ public class CList {
                 System.err.println("Ошибка при попытке продлить депозит: " + e.getMessage());
             }
         } else {
-            // Если депозит не выбран, показать предупреждение
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Выбор депозита");
             alert.setHeaderText(null);
